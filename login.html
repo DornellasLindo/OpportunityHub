@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - OpportunityHub</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url(fundo-login.png) no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.94);
+      padding: 40px 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .logo img {
+      width: 180px;
+      margin-bottom: 25px;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-bottom: 16px;
+    }
+
+    .forgot-password a {
+      color: #0077cc;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      background-color: #0a66c2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .btn-login:hover {
+      background-color: #084d9b;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    .divider span {
+      background-color: #fff;
+      padding: 0 10px;
+      position: relative;
+      z-index: 1;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .divider::before {
+      content: "";
+      height: 1px;
+      background-color: #ccc;
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 0;
+    }
+
+    .register {
+      font-size: 14px;
+    }
+
+    .register a {
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .titulo-form {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <img src="OpportunityHub.png" alt="OpportunityHub" />
+    </div>
+    <form class="login-form" onsubmit="handleForm(event)">
+      <div class="titulo-form" id="formTitle">Login</div>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="senha" placeholder="Senha" required />
+      <div class="forgot-password"><a href="#">Esqueceu a senha?</a></div>
+      <button type="submit" class="btn-login" id="btnSubmit">Entrar</button>
+      <div class="register">
+        <span id="toggleText">Não tem uma conta?</span> <a onclick="alternarModo()" id="toggleLink">Cadastre-se</a>
+      </div>
+  </div>
+<script>
+  function validarLogin() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+
+  if ((email.endsWith("@gmail.com") || email.endsWith("@hotmail.com")) && senha !== "") {
+    localStorage.setItem('usuarioAtivo', email); // <- AQUI
+    window.location.href = "index.html";
+  } else {
+    alert("Email ou senha inválidos!");
+  }
+}
+let modoCadastro = false; // false = login | true = cadastro
+
+    function alternarModo() {
+      modoCadastro = !modoCadastro;
+      document.getElementById("formTitle").textContent = modoCadastro ? "Cadastro" : "Login";
+      document.getElementById("btnSubmit").textContent = modoCadastro ? "Cadastrar" : "Entrar";
+      document.getElementById("toggleText").textContent = modoCadastro ? "Já tem uma conta?" : "Não tem uma conta?";
+      document.getElementById("toggleLink").textContent = modoCadastro ? "Fazer login" : "Cadastre-se";
+    }
+
+    function handleForm(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+
+      if (!email || !senha) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const usuarios = JSON.parse(localStorage.getItem("usuarios") || "{}");
+
+      if (modoCadastro) {
+        // Cadastro
+        if (usuarios[email]) {
+          alert("Esse email já está cadastrado.");
+        } else {
+          usuarios[email] = { senha };
+          localStorage.setItem("usuarios", JSON.stringify(usuarios));
+          localStorage.setItem("usuarioAtivo", email);
+          alert("Cadastro realizado com sucesso!");
+          window.location.href = "index.html";
+        }
+      } else {
+        // Login
+        if (usuarios[email] && usuarios[email].senha === senha) {
+          localStorage.setItem("usuarioAtivo", email);
+          window.location.href = "index.html";
+        } else {
+          alert("Email ou senha inválidos!");
+        }
+      }
+    }
+</script>
+</body>
+</html>

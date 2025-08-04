@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Opportunity Hub</title>
+  <style>
+    /* Seu CSS existente */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body, html { height: 100%; width: 100%; overflow: hidden; }
+    body { display: flex; background: #c4c8c7; color: #111; font-size: 16px; }
+
+    .sidebar {
+      width: 220px;
+      background: #eee;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 2px 0 5px rgb(0 0 0 / 0.05);
+    }
+    .sidebar img {
+      width: 140px;
+      margin-bottom: 40px;
+      user-select: none;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .user-info {
+      font-size: 13px;
+      margin-bottom: 40px;
+      line-height: 1.4;
+      color: #111;
+      text-align: center;
+    }
+    .menu a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      padding: 10px 10px;
+      display: block;
+      border-radius: 0 20px 20px 0;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .menu a.active, .menu a:hover {
+      background-color: #ced3d3;
+      font-weight: 700;
+    }
+    .bottom-links {
+      font-size: 13px;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      user-select: none;
+      text-align: center;
+    }
+    .bottom-links a {
+      text-decoration: none;
+      color: #111;
+      cursor: pointer;
+    }
+
+    .main {
+      flex: 1;
+      position: relative;
+      overflow-y: auto;
+      background: #c4c8c7;
+    }
+
+    .background {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 10px rgb(0 0 0 / 0.1));
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+
+    .circle1 {
+      width: 600px;
+      height: 600px;
+      background: #223341;
+      top: -300px;
+      right: -400px;
+      animation: float1 30s ease-in-out infinite alternate;
+      opacity: 0.9;
+      box-shadow: inset -70px -70px 50px #1c2933;
+    }
+
+    .circle2 {
+      width: 500px;
+      height: 500px;
+      background: #415262;
+      top: -280px;
+      right: -150px;
+      animation: float2 40s ease-in-out infinite alternate;
+      opacity: 0.85;
+      box-shadow: inset -40px -40px 60px #324454;
+    }
+
+    .circle3 {
+      width: 650px;
+      height: 650px;
+      background: #c4c8c7;
+      bottom: -400px;
+      left: -400px;
+      animation: float3 50s ease-in-out infinite alternate;
+      box-shadow: inset 70px 70px 90px #b0b4b1;
+    }
+
+    @keyframes float1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-20px, 15px) scale(1.05); }
+    }
+    @keyframes float2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-15px, 10px) scale(1.03); }
+    }
+    @keyframes float3 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(25px, 20px) scale(1.02); }
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      padding: 15px 30px;
+      background: #f0f0f0;
+      border-bottom-left-radius: 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+    }
+
+    .search-box input {
+      width: 500px;
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+    .search-box input:focus {
+      border-color: #556a7b;
+      background-color: #fff;
+    }
+
+    .icons {
+      display: flex;
+      gap: 15px;
+    }
+    .icon {
+      width: 26px;
+      height: 26px;
+      background: #c4c8c7;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: inset 2px 2px 3px #a0a5a1,
+                  inset -2px -2px 5px #d0d5d2;
+      transition: background 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      user-select: none;
+    }
+    .icon:hover {
+      background: #a0abb4;
+    }
+
+    .content {
+      position: relative;
+      padding: 40px 30px;
+      z-index: 10;
+      color: #222;
+      max-width: 900px;
+    }
+    .content h1 {
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .content p {
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+    /* Novo estilo para vaga-card */
+    .vaga-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+    .vaga-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .vaga-card h4 {
+      margin-bottom: 10px;
+      color: #223341;
+    }
+    .vaga-card p {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .search-box input {
+        width: 100%;
+      }
+      .sidebar {
+        width: 180px;
+        padding: 20px 10px;
+      }
+      .sidebar img {
+        width: 130px;
+      }
+    }
+
+    .perfil-panel {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .perfil-panel h3 {
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #223341;
+    }
+
+    .perfil-panel label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .perfil-panel input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .perfil-panel button {
+      margin-top: 15px;
+      background: #0a66c2;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .perfil-panel {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  width: 300px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  display: none; /* escondido por padrão */
+  flex-direction: column;
+  z-index: 999;
+}
+
+.fechar-perfil {
+  text-align: right;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <img src="OpportunityHub.png" alt="OpportunityHub" draggable="false" />
+      <div class="menu">
+        <a href="#" class="active" onclick="showContent('Inicio', this); return false;">🏠Início</a>
+        <a href="#" onclick="showContent('Vagas', this); return false;">🔒Vagas</a>
+        <a href="#" onclick="showContent('Cursos', this); return false;">✏️Cursos</a>
+        <a href="#" onclick="showContent('Meus_cursos', this); return false;">📝Meus cursos</a>
+        <a href="colaboradores.html">🏢Colaboradores</a>
+      </div>
+    </div>
+    <div class="bottom-links">
+      <a href="#" onclick="showContent('Ajuda', this); return false;">Ajuda</a>
+      <a href="#" onclick="showContent('Sobre nós', this); return false;">Sobre nós</a>
+      <a href="#" onclick="showContent('Termos e privacidade', this); return false;">Termos e privacidade</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="background">
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+    </div>
+
+    <div class="header">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar..." />
+      </div>
+      <div class="icons">
+        <div class="icon" title="Configurações">⚙️</div>
+        <div class="icon" title="Notificações">🔔</div>
+        <div class="icon" title="Perfil">👤</div>
+      </div>
+    </div>
+
+    <div class="perfil-panel" id="perfilPanel">
+  <div class="fechar-perfil" onclick="togglePerfil(false)">&times;</div>
+  <h3>Editar Perfil</h3>
+  <form onsubmit="salvarPerfil(event)">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" name="telefone">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="idade">Idade:</label>
+    <input type="number" id="idade" name="idade">
+    <label for="sexo">Sexo:</label>
+    <input type="text" id="sexo" name="sexo">
+    <button type="submit">Salvar</button>
+  </form>
+</div>
+
+    <div class="content" id="conteudo"></div>
+  </div>
+
+<script>
+  function showContent(section, element) {
+    const content = document.getElementById('conteudo');
+
+    // Remove a classe 'active' de todos os links do menu
+    document.querySelectorAll('.menu a').forEach(link => link.classList.remove('active'));
+
+    // Adiciona 'active' ao link clicado, se existir
+    if (element) {
+      element.classList.add('active');
+    }
+
+    switch (section) {
+      case 'Inicio':
+        content.innerHTML = `
+          <h2>Início</h2>
+          <p>Bem-vindo à página inicial do Opportunity Hub.</p>
+        `;
+        break;
+
+      case 'Vagas':
+        content.innerHTML = `
+          <h2>Vagas</h2>
+          <div id="vagasContainer"><p>Carregando vagas...</p></div>
+        `;
+        renderizarVagas();
+        break;
+
+      case 'Cursos':
+        content.innerHTML = `
+          <h2>Cursos</h2>
+          <p>Aqui você pode encontrar os cursos disponíveis.</p>
+        `;
+        renderizarCursos();
+        break;
+
+      case 'Meus_cursos':
+        content.innerHTML = `
+          <h2>Meus Cursos</h2>
+          <p>Seus cursos inscritos aparecem aqui.</p>
+        `;
+        break;
+
+      case 'Ajuda':
+        content.innerHTML = `
+          <h2>Ajuda</h2>
+          <p>&nbsp;</p>
+            <h2>Como faço para me cadastrar no site?</h2>
+            <p>Clique na opção “Cadastrar” no topo da página inicial e preencha os dados solicitados. Após concluir o cadastro, você receberá um e-mail para confirmar sua conta. </h2>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <h2>Como posso entrar em contato com o suporte?</h2>
+            <p>Você pode nos contatar pelo e-mail opportunityhub2025@gmail.com</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <h2>Minhas informações estão seguras no site?</h2>
+            <p>Sim. Nosso site utiliza criptografia e segue práticas rigorosas de proteção de dados, em conformidade com a LGPD (Lei Geral de Proteção de Dados).</p>
+        `;
+        break;
+
+      case 'Sobre nós':
+        content.innerHTML = `
+          <h2>Sobre nós</h2>
+          <p>Informações sobre o Opportunity Hub.</p>
+        `;
+        break;
+
+      case 'Termos e privacidade':
+        content.innerHTML = `
+          <h2>Termos e Privacidade</h2>
+          <p>Políticas e termos de uso do site.</p>
+        `;
+        break;
+
+      default:
+        content.innerHTML = `
+          <h2>Bem-vindo</h2>
+          <p>Escolha uma opção no menu lateral para começar.</p>
+        `;
+    }
+  }
+
+  const cursos = [
+    {
+      titulo: "Curso de Programação Web",
+      descricao: "Aprenda HTML, CSS, JavaScript e frameworks modernos.",
+      duracao: "6 meses",
+      instituicao: "Senai"
+    },
+    {
+      titulo: "Curso de Design Gráfico",
+      descricao: "Domine ferramentas como Photoshop e Illustrator.",
+      duracao: "4 meses",
+      instituicao: "Sesc"
+    },
+    {
+      titulo: "Curso de Administração",
+      descricao: "Desenvolva habilidades de gestão e liderança.",
+      duracao: "1 ano",
+      instituicao: "Sebrae"
+    }
+  ];
+  // Exemplo de função para popular vagas dinamicamente
+ function renderizarVagas(filtro = '') {
+    const container = document.getElementById('vagasContainer');
+    const vagas = JSON.parse(localStorage.getItem("vagas") || "[]");
+
+    if (vagas.length === 0) {
+      container.innerHTML = "<p>Não há vagas disponíveis no momento.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+    vagas.forEach(vaga => {
+      const div = document.createElement("div");
+      div.className = "vaga-card";
+      div.innerHTML = `
+        <h4>${vaga.titulo}</h4>
+        <p><strong>Descrição:</strong> ${vaga.descricao}</p>
+        <p><strong>Local:</strong> ${vaga.local}</p>
+        <p><strong>Salário:</strong> ${vaga.salario || "Não informado"}</p>
+        <p><strong>Tipo de contrato:</strong> ${vaga.contrato}</p>
+        <p><em>Publicado por: ${vaga.empresa}</em></p>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+   function renderizarCursos() {
+    const content = document.getElementById('conteudo');
+    let html = "<h2>Cursos</h2>";
+
+    if (cursos.length === 0) {
+      html += "<p>Não há cursos disponíveis no momento.</p>";
+    } else {
+    cursos.forEach(curso => {
+      html += `
+        <div class="vaga-card">
+          <h4>${curso.titulo}</h4>
+          <p><strong>Descrição:</strong> ${curso.descricao}</p>
+          <p><strong>Duração:</strong> ${curso.duracao}</p>
+          <p><strong>Instituição:</strong> ${curso.instituicao}</p>
+        </div>
+      `;
+    });
+  }
+  content.innerHTML = html;
+  };
+  
+    window.onload = function() {
+    showContent('Inicio', document.querySelector('.menu a.active'));
+    carregarPerfil();
+  };
+
+  function salvarPerfil(e) {
+  e.preventDefault();
+  const usuario = localStorage.getItem('usuarioAtivo');
+  if (!usuario) return alert('Usuário não autenticado');
+
+  const dados = {
+    nome: document.getElementById('nome').value,
+    telefone: document.getElementById('telefone').value,
+    email: document.getElementById('email').value,
+    idade: document.getElementById('idade').value,
+    sexo: document.getElementById('sexo').value
+  };
+  localStorage.setItem(`perfil_${usuario}`, JSON.stringify(dados));
+  alert("Dados salvos com sucesso!");
+}
+
+function carregarPerfil() {
+  const usuario = localStorage.getItem('usuarioAtivo');
+  if (!usuario) return;
+
+  const dadosSalvos = JSON.parse(localStorage.getItem(`perfil_${usuario}`));
+  if (dadosSalvos) {
+    document.getElementById('nome').value = dadosSalvos.nome || '';
+    document.getElementById('telefone').value = dadosSalvos.telefone || '';
+    document.getElementById('email').value = dadosSalvos.email || '';
+    document.getElementById('idade').value = dadosSalvos.idade || '';
+    document.getElementById('sexo').value = dadosSalvos.sexo || '';
+  }
+}
+  document.querySelectorAll('.icon').forEach(icon => {
+    if (icon.title === "Perfil") {
+      icon.addEventListener('click', () => togglePerfil(true));
+    }
+  });
+
+  function togglePerfil(exibir) {
+    const painel = document.getElementById('perfilPanel');
+    painel.style.display = exibir ? 'flex' : 'none';
+  }
+
+  function salvarPerfil(e) {
+    e.preventDefault();
+    const email = localStorage.getItem('usuarioAtivo') || 'padrao';
+    const dados = {
+      nome: document.getElementById('nome').value,
+      telefone: document.getElementById('telefone').value,
+      email: document.getElementById('email').value,
+      idade: document.getElementById('idade').value,
+      sexo: document.getElementById('sexo').value
+    };
+    localStorage.setItem(`perfil_${email}`, JSON.stringify(dados));
+    alert("Perfil salvo!");
+    togglePerfil(false);
+  }
+
+  // Preenche os dados do perfil se já tiverem sido salvos
+   window.addEventListener('load', () => {
+    const email = localStorage.getItem('usuarioAtivo') || 'padrao';
+    const dadosSalvos = JSON.parse(localStorage.getItem(`perfil_${email}`));
+    if (dadosSalvos) {
+      document.getElementById('nome').value = dadosSalvos.nome || '';
+      document.getElementById('telefone').value = dadosSalvos.telefone || '';
+      document.getElementById('email').value = dadosSalvos.email || '';
+      document.getElementById('idade').value = dadosSalvos.idade || '';
+      document.getElementById('sexo').value = dadosSalvos.sexo || '';
+    }
+  });
+
+  </script>
+</body>
+</html>

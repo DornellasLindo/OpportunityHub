@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login de Empresas - Opportunity Hub</title>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body, html { height: 100%; width: 100%; background: #c4c8c7; color: #111; display: flex; flex-direction: column; align-items: center; padding: 30px; }
+    h1 { margin-bottom: 20px; }
+    .container {
+      background: #eee;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 450px;
+      width: 100%;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+    }
+    input, textarea, select {
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: #223341;
+      color: #eee;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #415262;
+    }
+    .switch-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #223341;
+      cursor: pointer;
+      text-decoration: underline;
+      text-align: center;
+    }
+    #vagaForm > * {
+      margin-top: 10px;
+    }
+    #vagaForm textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .success-message {
+      margin-top: 15px;
+      padding: 10px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .vaga-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      background: #fff;
+      position: relative;
+    }
+    .vaga-box button.remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .vaga-box button.remove-btn:hover {
+      background: #c0392b;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Login de Empresas</h1>
+  <div class="container" id="authContainer">
+    <form id="loginForm">
+      <label for="emailLogin">Email</label>
+      <input type="email" id="emailLogin" required />
+      <label for="senhaLogin">Senha</label>
+      <input type="password" id="senhaLogin" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="switch-link" id="toCadastro">Não tem conta? Cadastre-se aqui</div>
+  </div>
+
+  <div class="container" id="cadastroContainer" style="display:none;">
+    <form id="cadastroForm">
+      <label for="emailCadastro">Email</label>
+      <input type="email" id="emailCadastro" required />
+      <label for="senhaCadastro">Senha</label>
+      <input type="password" id="senhaCadastro" required />
+      <label for="nomeEmpresa">Nome da empresa</label>
+      <input type="text" id="nomeEmpresa" required />
+      <button type="submit">Cadastrar</button>
+    </form>
+    <div class="switch-link" id="toLogin">Já tem conta? Faça login aqui</div>
+  </div>
+
+  <div class="container" id="vagaContainer" style="display:none;">
+    <button onclick="logout()" style="background:#aaa; margin-bottom: 15px;">Sair</button>
+    <h2>Cadastrar Vaga</h2>
+    <form id="vagaForm">
+      <label for="titulo">Título da vaga *</label>
+      <input type="text" id="titulo" required />
+      <label for="descricao">Descrição *</label>
+      <textarea id="descricao" required></textarea>
+      <label for="local">Local *</label>
+      <input type="text" id="local" required />
+      <label for="salario">Salário</label>
+      <input type="text" id="salario" placeholder="Exemplo: R$ 3.000,00" />
+      <label for="contrato">Tipo de contrato *</label>
+      <select id="contrato" required>
+        <option value="">Selecione</option>
+        <option value="CLT">CLT</option>
+        <option value="PJ">PJ</option>
+        <option value="Estágio">Estágio</option>
+        <option value="Freelancer">Freelancer</option>
+      </select>
+      <button type="submit">Cadastrar Vaga</button>
+    </form>
+    <div id="message"></div>
+    <div id="minhasVagas"></div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const cadastroForm = document.getElementById('cadastroForm');
+    const authContainer = document.getElementById('authContainer');
+    const cadastroContainer = document.getElementById('cadastroContainer');
+    const vagaContainer = document.getElementById('vagaContainer');
+    const toCadastro = document.getElementById('toCadastro');
+    const toLogin = document.getElementById('toLogin');
+    const messageDiv = document.getElementById('message');
+
+    const USERS_KEY = 'usuariosEmpresas';
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+    toCadastro.onclick = () => {
+      authContainer.style.display = 'none';
+      cadastroContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
+    };
+    toLogin.onclick = () => {
+      cadastroContainer.style.display = 'none';
+      authContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
+    };
+
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('emailLogin').value.trim().toLowerCase();
+      const senha = document.getElementById('senhaLogin').value;
+
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.senha === senha);
+
+      if (user) {
+        sessionStorage.setItem('userEmpresa', JSON.stringify(user));
+        authContainer.style.display = 'none';
+        cadastroContainer.style.display = 'none';
+        vagaContainer.style.display = 'block';
+        renderMinhasVagas();
+      } else {
+        alert('Usuário ou senha inválidos');
+      }
+    });
+
+    cadastroForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('emailCadastro').value.trim().toLowerCase();
+      const senha = document.getElementById('senhaCadastro').value;
+      const nomeEmpresa = document.getElementById('nomeEmpresa').value.trim();
+
+      if (!email || !senha || !nomeEmpresa) {
+        alert('Preencha todos os campos');
+        return;
+      }
+
+      if (!email.includes('@') || email.endsWith('@gmail.com') || email.endsWith('@hotmail.com')) {
+        alert('Use um e-mail corporativo válido.');
+        return;
+      }
+
+      const users = getUsers();
+      if (users.some(u => u.email === email)) {
+        alert('Este email já está cadastrado');
+        return;
+      }
+
+      users.push({ email, senha, empresa: nomeEmpresa });
+      saveUsers(users);
+
+      alert('Cadastro realizado com sucesso! Agora faça login.');
+
+      cadastroContainer.style.display = 'none';
+      authContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
+    });
+
+    const vagaForm = document.getElementById('vagaForm');
+    vagaForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const titulo = document.getElementById('titulo').value.trim();
+      const descricao = document.getElementById('descricao').value.trim();
+      const local = document.getElementById('local').value.trim();
+      const salario = document.getElementById('salario').value.trim();
+      const contrato = document.getElementById('contrato').value;
+      const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
+      if (!user) {
+        alert('Você precisa estar logado para cadastrar vagas.');
+        return;
+      }
+
+      if (!titulo || !descricao || !local || !contrato) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+      const novaVaga = {
+        id: Date.now(),
+        titulo,
+        descricao,
+        local,
+        salario,
+        contrato,
+        empresa: user.empresa,
+        email: user.email
+      };
+
+      vagas.push(novaVaga);
+      localStorage.setItem('vagas', JSON.stringify(vagas));
+
+      vagaForm.reset();
+      messageDiv.innerHTML = '<div class="success-message">Vaga cadastrada com sucesso!</div>';
+      renderMinhasVagas();
+    });
+
+    function renderMinhasVagas() {
+      const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
+      const vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+      const minhas = vagas.filter(v => v.email === user.email);
+      const container = document.getElementById('minhasVagas');
+
+      if (minhas.length === 0) {
+        container.innerHTML = '<p style="margin-top: 20px;">Nenhuma vaga cadastrada ainda.</p>';
+        return;
+      }
+
+      container.innerHTML = '<h3 style="margin-top: 30px;">Suas Vagas:</h3>' +
+        minhas.map(v => `
+          <div class="vaga-box">
+            <button class="remove-btn" onclick="removerVaga(${v.id})">Remover</button>
+            <strong>${v.titulo}</strong> (${v.contrato})<br>
+            ${v.local} - ${v.salario || 'Salário não informado'}<br>
+            <small>${v.descricao}</small>
+          </div>
+        `).join('');
+    }
+
+    function removerVaga(id) {
+      if (confirm('Deseja remover esta vaga?')) {
+        let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+        vagas = vagas.filter(v => v.id !== id);
+        localStorage.setItem('vagas', JSON.stringify(vagas));
+        renderMinhasVagas();
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('userEmpresa');
+      location.reload();
+    }
+
+    window.onload = () => {
+      const user = sessionStorage.getItem('userEmpresa');
+      if (user) {
+        authContainer.style.display = 'none';
+        cadastroContainer.style.display = 'none';
+        vagaContainer.style.display = 'block';
+        renderMinhasVagas();
+      }
+    };
+  </script>
+</body>
+</html>
