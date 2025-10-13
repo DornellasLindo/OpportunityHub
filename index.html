@@ -217,10 +217,37 @@
     switch(section) {
       case 'Inicio':
         content.innerHTML = `
-          <!-- conteúdo da home permanece igual -->
-          <h1>Bem-vindo ao Opportunity Hub!</h1>
-          <p>Explore vagas e cursos!</p>
-        `;
+          <section style="text-align:center; padding:50px 20px;">
+            <h1 style="font-size:36px; color:#223341; margin-bottom:20px;">Bem-vindo ao Opportunity Hub!</h1>
+            <p style="font-size:18px; max-width:700px; margin:0 auto 30px;">
+              Conectamos você às melhores oportunidades de emprego e cursos de capacitação.
+              Explore vagas, desenvolva novas habilidades e avance na sua carreira!
+            </p>
+            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:40px;">
+              <button onclick="showContent('Vagas', document.querySelector('.menu a:nth-child(2)'))" 
+                      style="padding:15px 25px; font-size:16px; border:none; border-radius:10px; background:#223341; color:white; cursor:pointer;">
+                Ver Vagas
+              </button>
+              <button onclick="showContent('Cursos', document.querySelector('.menu a:nth-child(3)'))" 
+                      style="padding:15px 25px; font-size:16px; border:none; border-radius:10px; background:#556a7b; color:white; cursor:pointer;">
+                Explorar Cursos
+              </button>
+            </div>
+            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <h3 style="color:#223341;">Vagas Atualizadas</h3>
+                <p>Fique por dentro das últimas oportunidades de emprego disponíveis em sua área.</p>
+              </div>
+              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <h3 style="color:#223341;">Cursos de Qualificação</h3>
+                <p>Adquira novas habilidades e impulsione sua carreira com nossos cursos selecionados.</p>
+              </div>
+              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <h3 style="color:#223341;">Conexão Profissional</h3>
+                <p>Networking com empresas e profissionais para expandir suas oportunidades.</p>
+              </div>
+            </div>
+          </section>`;
         break;
       case 'Vagas':
         content.innerHTML = '<h2>Vagas</h2><div id="vagasContainer"><p>Carregando vagas...</p></div>';
@@ -356,3 +383,4 @@
 </script>
 </body>
 </html>
+
