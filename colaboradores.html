@@ -271,54 +271,74 @@
 
     const vagaForm = document.getElementById('vagaForm');
     vagaForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const titulo = document.getElementById('titulo').value.trim();
-      const descricao = document.getElementById('descricao').value.trim();
-      const local = document.getElementById('local').value.trim();
-      const salario = document.getElementById('salario').value.trim();
-      const contrato = document.getElementById('contrato').value;
-      const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
-      if (!user) { alert('Você precisa estar logado para cadastrar vagas.'); return; }
-      if (!titulo || !descricao || !local || !contrato) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
-        return;
-      }
+  e.preventDefault();
+  const titulo = document.getElementById('titulo').value.trim();
+  const descricao = document.getElementById('descricao').value.trim();
+  const local = document.getElementById('local').value.trim();
+  const salario = document.getElementById('salario').value.trim();
+  const contrato = document.getElementById('contrato').value;
+  const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
 
-      let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
-      const novaVaga = { id: Date.now(), titulo, descricao, local, salario, contrato, empresa: user.empresa, email: user.email };
-      vagas.push(novaVaga);
-      localStorage.setItem('vagas', JSON.stringify(vagas));
+  if (!user) {
+    alert('Você precisa estar logado para cadastrar vagas.');
+    return;
+  }
 
-      vagaForm.reset();
-      messageDiv.innerHTML = '<div class="success-message">Vaga cadastrada com sucesso!</div>';
-      renderMinhasVagas();
-    });
+  if (!titulo || !descricao || !local || !contrato) {
+    alert('Por favor, preencha todos os campos obrigatórios.');
+    return;
+  }
 
-    function renderMinhasVagas() {
-      const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
-      const vagas = JSON.parse(localStorage.getItem('vagas')) || [];
-      const minhas = vagas.filter(v => v.email === user.email);
-      const container = document.getElementById('minhasVagas');
-      if (minhas.length === 0) {
-        container.innerHTML = '<p style="margin-top: 20px;">Nenhuma vaga cadastrada ainda.</p>';
-        return;
-      }
-      container.innerHTML = '<h3 style="margin-top: 30px;">Suas Vagas:</h3>' +
-        minhas.map(v => `
-          <div class="vaga-box">
-            <button class="remove-btn" onclick="removerVaga(${v.id})">Remover</button>
-            <strong>${v.titulo}</strong> (${v.contrato})<br>
-            ${v.local} - ${v.salario || 'Salário não informado'}<br>
-            <small>${v.descricao}</small>
-          </div>
-        `).join('');
-    }
+  let vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
+
+  const novaVaga = {
+    id: Date.now(),
+    titulo,
+    descricao,
+    local,
+    salario,
+    contrato,
+    empresa: user.empresa,
+    email: user.email
+  };
+
+  vagas.push(novaVaga);
+  localStorage.setItem('vagasColaboradores', JSON.stringify(vagas));
+
+  vagaForm.reset();
+  messageDiv.innerHTML = '<div class="success-message">Vaga cadastrada com sucesso!</div>';
+  renderMinhasVagas();
+});
+
+
+function renderMinhasVagas() {
+  const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
+  const vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
+  const minhas = vagas.filter(v => v.email === user.email);
+  const container = document.getElementById('minhasVagas');
+
+  if (minhas.length === 0) {
+    container.innerHTML = '<p style="margin-top: 20px;">Nenhuma vaga cadastrada ainda.</p>';
+    return;
+  }
+
+  container.innerHTML = '<h3 style="margin-top: 30px;">Suas Vagas:</h3>' +
+    minhas.map(v => `
+      <div class="vaga-box">
+        <button class="remove-btn" onclick="removerVaga(${v.id})">Remover</button>
+        <strong>${v.titulo}</strong> (${v.contrato})<br>
+        ${v.local} - ${v.salario || 'Salário não informado'}<br>
+        <small>${v.descricao}</small>
+      </div>
+    `).join('');
+}
+
 
     function removerVaga(id) {
       if (confirm('Deseja remover esta vaga?')) {
-        let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+        let vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
         vagas = vagas.filter(v => v.id !== id);
-        localStorage.setItem('vagas', JSON.stringify(vagas));
+        localStorage.setItem('vagasColaboradores', JSON.stringify(vagas));
         renderMinhasVagas();
       }
     }
