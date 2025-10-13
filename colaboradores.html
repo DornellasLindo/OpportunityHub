@@ -6,64 +6,95 @@
   <title>Login de Empresas - Opportunity Hub</title>
   
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body, html { height: 100%; width: 100%; background: #c4c8c7; color: #111; display: flex; flex-direction: column; align-items: center; padding: 30px; }
-    h1 { margin-bottom: 20px; }
-    .container {
-      background: #eee;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      max-width: 450px;
-      width: 100%;
+    * {
+      margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;
     }
+
+    body {
+      height: 100vh;
+      background: #d3d6d6 url('fundo-login.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 380px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 160px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #223341;
+    }
+
     label {
       display: block;
-      margin-top: 15px;
-      font-weight: 600;
-      font-size: 14px;
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: left;
       color: #333;
-    }
-    input, textarea, select {
-      margin-top: 5px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #aaa;
       font-size: 14px;
-      width: 100%;
-      font-family: inherit;
     }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
     button {
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 12px;
       width: 100%;
-      background: #223341;
-      color: #eee;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: 0.3s;
     }
-    button:hover {
-      background: #415262;
+
+    button:hover { opacity: 0.9; }
+
+    .btn-primary {
+      background: #004aad;
+      color: white;
     }
+
+    .btn-secondary {
+      background: #ccc;
+      color: #222;
+    }
+
     .switch-link {
       margin-top: 15px;
       font-size: 14px;
-      color: #223341;
+      color: #004aad;
       cursor: pointer;
       text-decoration: underline;
-      text-align: center;
     }
-    #vagaForm > * {
-      margin-top: 10px;
-    }
-    #vagaForm textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
+
     .success-message {
       margin-top: 15px;
       padding: 10px;
@@ -73,6 +104,7 @@
       text-align: center;
       font-weight: 600;
     }
+
     .vaga-box {
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -81,6 +113,7 @@
       background: #fff;
       position: relative;
     }
+
     .vaga-box button.remove-btn {
       position: absolute;
       top: 10px;
@@ -93,6 +126,7 @@
       font-size: 12px;
       cursor: pointer;
     }
+
     .vaga-box button.remove-btn:hover {
       background: #c0392b;
     }
@@ -100,19 +134,23 @@
 </head>
 
 <body>
-  <h1>Login de Empresas</h1>
   <div class="container" id="authContainer">
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Login de Empresas</h1>
     <form id="loginForm">
       <label for="emailLogin">Email</label>
       <input type="email" id="emailLogin" required />
       <label for="senhaLogin">Senha</label>
       <input type="password" id="senhaLogin" required />
-      <button type="submit">Entrar</button>
+      <button type="submit" class="btn-primary">Entrar</button>
     </form>
     <div class="switch-link" id="toCadastro">Não tem conta? Cadastre-se aqui</div>
+    <button onclick="window.location.href='login.html'" class="btn-secondary">Voltar</button>
   </div>
 
   <div class="container" id="cadastroContainer" style="display:none;">
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Cadastro de Empresa</h1>
     <form id="cadastroForm">
       <label for="emailCadastro">Email</label>
       <input type="email" id="emailCadastro" required />
@@ -120,14 +158,17 @@
       <input type="password" id="senhaCadastro" required />
       <label for="nomeEmpresa">Nome da empresa</label>
       <input type="text" id="nomeEmpresa" required />
-      <button type="submit">Cadastrar</button>
+      <button type="submit" class="btn-primary">Cadastrar</button>
     </form>
     <div class="switch-link" id="toLogin">Já tem conta? Faça login aqui</div>
+    <button onclick="window.location.href='login.html'" class="btn-secondary">Voltar</button>
   </div>
 
   <div class="container" id="vagaContainer" style="display:none;">
-    <button onclick="logout()" style="background:#aaa; margin-bottom: 15px;">Sair</button>
-    <h2>Cadastrar Vaga</h2>
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Painel da Empresa</h1>
+    <button onclick="logout()" class="btn-secondary">Sair</button>
+    <h2 style="margin-top:15px;">Cadastrar Vaga</h2>
     <form id="vagaForm">
       <label for="titulo">Título da vaga *</label>
       <input type="text" id="titulo" required />
@@ -145,7 +186,7 @@
         <option value="Estágio">Estágio</option>
         <option value="Freelancer">Freelancer</option>
       </select>
-      <button type="submit">Cadastrar Vaga</button>
+      <button type="submit" class="btn-primary">Cadastrar Vaga</button>
     </form>
     <div id="message"></div>
     <div id="minhasVagas"></div>
@@ -160,13 +201,11 @@
     const toCadastro = document.getElementById('toCadastro');
     const toLogin = document.getElementById('toLogin');
     const messageDiv = document.getElementById('message');
-
     const USERS_KEY = 'usuariosEmpresas';
 
     function getUsers() {
       return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
     }
-
     function saveUsers(users) {
       localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
@@ -186,7 +225,6 @@
       e.preventDefault();
       const email = document.getElementById('emailLogin').value.trim().toLowerCase();
       const senha = document.getElementById('senhaLogin').value;
-
       const users = getUsers();
       const user = users.find(u => u.email === email && u.senha === senha);
 
@@ -225,9 +263,7 @@
 
       users.push({ email, senha, empresa: nomeEmpresa });
       saveUsers(users);
-
       alert('Cadastro realizado com sucesso! Agora faça login.');
-
       cadastroContainer.style.display = 'none';
       authContainer.style.display = 'block';
       messageDiv.innerHTML = '';
@@ -236,35 +272,20 @@
     const vagaForm = document.getElementById('vagaForm');
     vagaForm.addEventListener('submit', e => {
       e.preventDefault();
-
       const titulo = document.getElementById('titulo').value.trim();
       const descricao = document.getElementById('descricao').value.trim();
       const local = document.getElementById('local').value.trim();
       const salario = document.getElementById('salario').value.trim();
       const contrato = document.getElementById('contrato').value;
       const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
-      if (!user) {
-        alert('Você precisa estar logado para cadastrar vagas.');
-        return;
-      }
-
+      if (!user) { alert('Você precisa estar logado para cadastrar vagas.'); return; }
       if (!titulo || !descricao || !local || !contrato) {
         alert('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
 
       let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
-      const novaVaga = {
-        id: Date.now(),
-        titulo,
-        descricao,
-        local,
-        salario,
-        contrato,
-        empresa: user.empresa,
-        email: user.email
-      };
-
+      const novaVaga = { id: Date.now(), titulo, descricao, local, salario, contrato, empresa: user.empresa, email: user.email };
       vagas.push(novaVaga);
       localStorage.setItem('vagas', JSON.stringify(vagas));
 
@@ -278,12 +299,10 @@
       const vagas = JSON.parse(localStorage.getItem('vagas')) || [];
       const minhas = vagas.filter(v => v.email === user.email);
       const container = document.getElementById('minhasVagas');
-
       if (minhas.length === 0) {
         container.innerHTML = '<p style="margin-top: 20px;">Nenhuma vaga cadastrada ainda.</p>';
         return;
       }
-
       container.innerHTML = '<h3 style="margin-top: 30px;">Suas Vagas:</h3>' +
         minhas.map(v => `
           <div class="vaga-box">
