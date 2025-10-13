@@ -1,191 +1,226 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login - OpportunityHub</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - OpportunityHub</title>
+<style>
+/* Mesmo estilo que você já tinha */
+body { 
+  font-family: Arial, sans-serif; 
+  background: url('fundo-login.png') no-repeat center center fixed; 
+  background-size: cover; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  height:100vh; 
+  margin:0;}
 
-    body {
-      background: url(fundo-login.png) no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+.login-container { 
+  background-color:white; 
+  padding:40px 50px; 
+  border-radius:12px; 
+  box-shadow:0 5px 20px rgba(0,0,0,0.15); 
+  width:350px; 
+  text-align:center;}
 
-    .login-container {
-      background-color: rgba(255, 255, 255, 0.94);
-      padding: 40px 30px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 360px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
+.login-container img { 
+  width:150px; 
+  margin-bottom:20px;}
 
-    .logo img {
-      width: 180px;
-      margin-bottom: 25px;
-    }
+h2 { 
+  margin-bottom:20px; 
+  color:#222;}
 
-    .login-form input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-    }
+input, select { 
+  width:100%; 
+  padding:10px; 
+  margin:8px 0; 
+  border:1px solid #ccc; 
+  border-radius:6px; 
+  font-size:14px;}
 
-    .forgot-password {
-      text-align: right;
-      margin-bottom: 16px;
-    }
+button { 
+  width:100%; 
+  padding:10px; 
+  margin-top:10px; 
+  background-color:#0066cc; 
+  color:white; 
+  border:none; 
+  border-radius:6px; 
+  font-size:16px; 
+  cursor:pointer; 
+  transition:0.3s;}
 
-    .forgot-password a {
-      color: #0077cc;
-      font-size: 13px;
-      text-decoration: none;
-    }
+button:hover { 
+  background-color:#004da5;}
 
-    .btn-login {
-      width: 100%;
-      padding: 12px;
-      background-color: #0a66c2;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 16px;
-    }
+.back-btn { 
+  background-color:#c4c4c4; 
+  color:#222; margin-top:12px;}
 
-    .btn-login:hover {
-      background-color: #084d9b;
-    }
+.back-btn:hover { 
+  background-color:#a9a9a9;}
 
-    .divider {
-      text-align: center;
-      margin: 16px 0;
-      position: relative;
-    }
+.toggle-link { 
+  margin-top:15px; 
+  display:block; 
+  font-size:14px; 
+  color:#007BFF; 
+  text-decoration:none; 
+  cursor:pointer;}
 
-    .divider span {
-      background-color: #fff;
-      padding: 0 10px;
-      position: relative;
-      z-index: 1;
-      color: #888;
-      font-size: 14px;
-    }
+.toggle-link:hover { 
+  text-decoration:underline;}
 
-    .divider::before {
-      content: "";
-      height: 1px;
-      background-color: #ccc;
-      width: 100%;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      z-index: 0;
-    }
+.error-message { 
+  color:red; 
+  font-size:13px; 
+  margin-top:8px; 
+  display:none;}
 
-    .register {
-      font-size: 14px;
-    }
+.success-message { 
+  color:green; 
+  font-size:13px; 
+  margin-top:8px; 
+  display:none;}
 
-    .register a {
-      color: #0077cc;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .titulo-form {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-  </style>
+#escolha-section button { 
+  margin:10px 0; 
+  font-weight:bold;}
+  
+</style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="logo">
-      <img src="OpportunityHub.png" alt="OpportunityHub" />
-    </div>
-    <form class="login-form" onsubmit="handleForm(event)">
-      <div class="titulo-form" id="formTitle">Login</div>
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="senha" placeholder="Senha" required />
-      <div class="forgot-password"><a href="#">Esqueceu a senha?</a></div>
-      <button type="submit" class="btn-login" id="btnSubmit">Entrar</button>
-      <div class="register">
-        <span id="toggleText">Não tem uma conta?</span> <a onclick="alternarModo()" id="toggleLink">Cadastre-se</a>
-      </div>
+<div class="login-container">
+  <img src="OpportunityHub.png" alt="OpportunityHub Logo" />
+
+  <!-- ESCOLHA -->
+  <div id="escolha-section">
+    <h2>Como deseja entrar?</h2>
+    <button id="btnUsuario">Sou Usuário</button>
+    <button id="btnColaborador">Sou Colaborador</button>
   </div>
+
+  <!-- LOGIN -->
+  <div id="login-section" style="display:none;">
+    <h2 id="titulo">Login de Usuário</h2>
+    <input type="email" id="emailLogin" placeholder="Email" />
+    <input type="password" id="senhaLogin" placeholder="Senha" />
+    <p id="loginError" class="error-message"></p>
+    <button id="btnLogin">Entrar</button>
+    <button class="back-btn" id="btnVoltarLogin">Voltar</button>
+    <span class="toggle-link" id="linkCadastro">Não tem conta? Cadastre-se aqui</span>
+  </div>
+
+  <!-- CADASTRO -->
+  <div id="cadastro-section" style="display:none;">
+    <h2 id="tituloCadastro">Cadastro de Usuário</h2>
+    <input type="text" id="nomeCadastro" placeholder="Nome completo" />
+    <input type="tel" id="telefoneCadastro" placeholder="Telefone" />
+    <input type="number" id="idadeCadastro" placeholder="Idade" />
+    <select id="sexoCadastro">
+      <option value="">Selecione o sexo</option>
+      <option value="Masculino">Masculino</option>
+      <option value="Feminino">Feminino</option>
+      <option value="Outro">Outro</option>
+    </select>
+    <input type="email" id="emailCadastro" placeholder="Email" />
+    <input type="password" id="senhaCadastro" placeholder="Senha" />
+    <p id="cadastroError" class="error-message"></p>
+    <p id="cadastroSuccess" class="success-message"></p>
+    <button id="btnCadastrar">Cadastrar</button>
+    <button class="back-btn" id="btnVoltarCadastro">Voltar</button>
+  </div>
+</div>
+
 <script>
-  function validarLogin() {
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
+document.addEventListener("DOMContentLoaded", function() {
+  const escolhaSection = document.getElementById("escolha-section");
+  const loginSection = document.getElementById("login-section");
+  const cadastroSection = document.getElementById("cadastro-section");
 
-  if ((email.endsWith("@gmail.com") || email.endsWith("@hotmail.com")) && senha !== "") {
-    localStorage.setItem('usuarioAtivo', email); // <- AQUI
-    window.location.href = "index.html";
-  } else {
-    alert("Email ou senha inválidos!");
+  function mostrarEscolha() {
+    escolhaSection.style.display = "block";
+    loginSection.style.display = "none";
+    cadastroSection.style.display = "none";
   }
-}
-let modoCadastro = false; // false = login | true = cadastro
 
-    function alternarModo() {
-      modoCadastro = !modoCadastro;
-      document.getElementById("formTitle").textContent = modoCadastro ? "Cadastro" : "Login";
-      document.getElementById("btnSubmit").textContent = modoCadastro ? "Cadastrar" : "Entrar";
-      document.getElementById("toggleText").textContent = modoCadastro ? "Já tem uma conta?" : "Não tem uma conta?";
-      document.getElementById("toggleLink").textContent = modoCadastro ? "Fazer login" : "Cadastre-se";
+  function mostrarLogin() {
+    escolhaSection.style.display = "none";
+    loginSection.style.display = "block";
+    cadastroSection.style.display = "none";
+    document.getElementById("loginError").style.display="none";
+  }
+
+  function mostrarCadastro() {
+    escolhaSection.style.display = "none";
+    loginSection.style.display = "none";
+    cadastroSection.style.display = "block";
+    document.getElementById("cadastroError").style.display="none";
+    document.getElementById("cadastroSuccess").style.display="none";
+  }
+
+  function cadastrarUsuario() {
+    const nome = document.getElementById("nomeCadastro").value.trim();
+    const telefone = document.getElementById("telefoneCadastro").value.trim();
+    const idade = document.getElementById("idadeCadastro").value.trim();
+    const sexo = document.getElementById("sexoCadastro").value;
+    const email = document.getElementById("emailCadastro").value.trim();
+    const senha = document.getElementById("senhaCadastro").value.trim();
+    const erro = document.getElementById("cadastroError");
+    const sucesso = document.getElementById("cadastroSuccess");
+
+    if (!nome || !telefone || !idade || !sexo || !email || !senha) {
+      erro.innerText = "Preencha todos os campos corretamente.";
+      erro.style.display = "block";
+      sucesso.style.display = "none";
+      return;
     }
 
-    function handleForm(event) {
-      event.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const senha = document.getElementById("senha").value;
-
-      if (!email || !senha) {
-        alert("Preencha todos os campos!");
-        return;
-      }
-
-      const usuarios = JSON.parse(localStorage.getItem("usuarios") || "{}");
-
-      if (modoCadastro) {
-        // Cadastro
-        if (usuarios[email]) {
-          alert("Esse email já está cadastrado.");
-        } else {
-          usuarios[email] = { senha };
-          localStorage.setItem("usuarios", JSON.stringify(usuarios));
-          localStorage.setItem("usuarioAtivo", email);
-          alert("Cadastro realizado com sucesso!");
-          window.location.href = "index.html";
-        }
-      } else {
-        // Login
-        if (usuarios[email] && usuarios[email].senha === senha) {
-          localStorage.setItem("usuarioAtivo", email);
-          window.location.href = "index.html";
-        } else {
-          alert("Email ou senha inválidos!");
-        }
-      }
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    if (usuarios.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+      erro.innerText = "Este email já está cadastrado.";
+      erro.style.display = "block";
+      sucesso.style.display = "none";
+      return;
     }
+
+    usuarios.push({nome, telefone, idade, sexo, email, senha});
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    sucesso.innerText = "Cadastro realizado com sucesso!";
+    sucesso.style.display = "block";
+    erro.style.display = "none";
+
+    setTimeout(()=>{mostrarLogin(); sucesso.style.display="none";}, 1500);
+  }
+
+  function loginUsuario() {
+    const email = document.getElementById("emailLogin").value.trim();
+    const senha = document.getElementById("senhaLogin").value.trim();
+    const erro = document.getElementById("loginError");
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    const usuarioValido = usuarios.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+    if(usuarioValido){
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioValido));
+      window.location.href="index.html";
+    } else {
+      erro.innerText="Email ou senha inválidos.";
+      erro.style.display="block";
+    }
+  }
+
+  // Event listeners
+  document.getElementById("btnUsuario").addEventListener("click", mostrarLogin);
+  document.getElementById("btnColaborador").addEventListener("click", ()=>window.location.href="colaboradores.html");
+  document.getElementById("linkCadastro").addEventListener("click", mostrarCadastro);
+  document.getElementById("btnVoltarLogin").addEventListener("click", mostrarEscolha);
+  document.getElementById("btnVoltarCadastro").addEventListener("click", mostrarLogin);
+  document.getElementById("btnCadastrar").addEventListener("click", cadastrarUsuario);
+  document.getElementById("btnLogin").addEventListener("click", loginUsuario);
+});
 </script>
 </body>
 </html>
