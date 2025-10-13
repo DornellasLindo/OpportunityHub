@@ -3,384 +3,360 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Opportunity Hub</title>
+  <title>Login de Empresas - Opportunity Hub</title>
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body, html { height: 100%; width: 100%; }
-    body { display: flex; background: #c4c8c7; color: #111; font-size: 16px; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;
+    }
 
-    .sidebar {
-      width: 220px;
-      background: #eee;
-      padding: 30px 20px;
+    body {
+      height: 100vh;
+      background: #d3d6d6 url('fundo-login.png') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 2px 0 5px rgb(0 0 0 / 0.05);
+      justify-content: center;
+      align-items: center;
     }
-    .sidebar img {
-      width: 140px;
-      margin-bottom: 40px;
-      user-select: none;
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 380px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 160px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #223341;
+    }
+
+    label {
       display: block;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: left;
+      color: #333;
+      font-size: 14px;
     }
-    .user-info { font-size: 13px; margin-bottom: 40px; line-height: 1.4; color: #111; text-align: center; }
-    .menu a {
-      text-decoration: none;
-      color: #111;
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
       font-weight: 600;
-      padding: 10px 10px;
-      display: block;
-      border-radius: 0 20px 20px 0;
-      margin-bottom: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .menu a.active, .menu a:hover { background-color: #ced3d3; font-weight: 700; }
-    .bottom-links { font-size: 13px; color: #111; display: flex; flex-direction: column; gap: 8px; user-select: none; text-align: center; }
-    .bottom-links a { text-decoration: none; color: #111; cursor: pointer; }
-
-    .main { flex: 1; position: relative; overflow-y: auto; background: #c4c8c7; }
-
-    .background { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
-    .circle { position: absolute; border-radius: 50%; filter: drop-shadow(0 0 10px rgb(0 0 0 / 0.1)); animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
-    .circle1 { width: 600px; height: 600px; background: #223341; top: -300px; right: -400px; animation: float1 30s ease-in-out infinite alternate; opacity: 0.9; box-shadow: inset -70px -70px 50px #1c2933; }
-    .circle2 { width: 500px; height: 500px; background: #415262; top: -280px; right: -150px; animation: float2 40s ease-in-out infinite alternate; opacity: 0.85; box-shadow: inset -40px -40px 60px #324454; }
-    .circle3 { width: 650px; height: 650px; background: #c4c8c7; bottom: -400px; left: -400px; animation: float3 50s ease-in-out infinite alternate; box-shadow: inset 70px 70px 90px #b0b4b1; }
-
-    @keyframes float1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-20px, 15px) scale(1.05); } }
-    @keyframes float2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-15px, 10px) scale(1.03); } }
-    @keyframes float3 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 20px) scale(1.02); } }
-
-    .header { position: sticky; top: 0; padding: 15px 30px; background: #f0f0f0; border-bottom-left-radius: 0px; display: flex; justify-content: space-between; align-items: center; z-index: 10; box-shadow: 0 2px 10px rgb(0 0 0 / 0.1); }
-    .search-box input { width: 500px; padding: 10px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 14px; transition: border-color 0.3s ease; }
-    .search-box input:focus { border-color: #556a7b; background-color: #fff; }
-
-    .icons { display: flex; gap: 15px; }
-    .icon { width: 26px; height: 26px; background: #c4c8c7; border-radius: 50%; cursor: pointer; box-shadow: inset 2px 2px 3px #a0a5a1, inset -2px -2px 5px #d0d5d2; transition: background 0.3s ease; display: flex; justify-content: center; align-items: center; font-size: 18px; user-select: none; }
-    .icon:hover { background: #a0abb4; }
-
-    .content { position: relative; padding: 40px 30px; z-index: 10; color: #222; max-width: 900px; }
-    .content h1 { font-weight: 700; font-size: 24px; margin-bottom: 10px; }
-    .content p { font-weight: 400; font-size: 16px; }
-
-    .vaga-card { background: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 20px; margin-bottom: 20px; transition: transform 0.2s ease; }
-    .vaga-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
-    .vaga-card h4 { margin-bottom: 10px; color: #223341; }
-    .vaga-card p { margin-bottom: 6px; }
-
-    .cursos-lista { display: flex; flex-wrap: wrap; gap: 15px; }
-    .curso-card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: 260px; }
-    .curso-card h3 { margin: 0 0 10px; }
-    .curso-card button { background: #223341; color: #fff; padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; }
-    .curso-card button:hover { background: #27485a; }
-
-    @media (max-width: 768px) {
-      .search-box input { width: 100%; }
-      .sidebar { width: 180px; padding: 20px 10px; }
-      .sidebar img { width: 130px; }
-      .cursos-lista { justify-content: center; }
+      transition: 0.3s;
     }
 
-    .perfil-panel { position: fixed; top: 80px; right: 30px; width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); z-index: 20; display: none; flex-direction: column; padding: 20px; }
-    .perfil-panel h3 { margin-bottom: 15px; font-size: 18px; color: #223341; }
-    .perfil-panel label { font-weight: bold; margin-top: 10px; display: block; }
-    .perfil-panel input { width: 100%; padding: 8px; margin-top: 4px; border-radius: 5px; border: 1px solid #ccc; }
-    .perfil-panel button { margin-top: 15px; background: #0a66c2; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; }
-    .fechar-perfil { text-align: right; font-size: 20px; cursor: pointer; margin-bottom: 10px; }
+    button:hover { opacity: 0.9; }
+
+    .btn-primary {
+      background: #004aad;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #ccc;
+      color: #222;
+    }
+
+    .switch-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #004aad;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .success-message {
+      margin-top: 15px;
+      padding: 10px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .vaga-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+      background: #fff;
+      position: relative;
+    }
+
+    .vaga-box button.remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .vaga-box button.remove-btn:hover {
+      background: #c0392b;
+    }
   </style>
 </head>
+
 <body>
-  <div class="sidebar">
-    <div>
-      <img src="OpportunityHub.png" alt="Logo OpportunityHub" draggable="false" />
-      <div class="menu">
-        <a href="#" class="active" onclick="showContent('Inicio', this); return false;">🏠Início</a>
-        <a href="#" onclick="showContent('Vagas', this); return false;">🔒Vagas</a>
-        <a href="#" onclick="showContent('Cursos', this); return false;">✏️Cursos</a>
-        <a href="#" onclick="showContent('Meus_cursos', this); return false;">📝Meus cursos</a>
-        <a href="colaboradores.html">🏢Colaboradores</a>
-      </div>
-    </div>
-    <div class="bottom-links">
-      <a href="#" onclick="showContent('Ajuda', this); return false;">Ajuda</a>
-      <a href="#" onclick="showContent('Sobre nós', this); return false;">Sobre nós</a>
-      <a href="#" onclick="showContent('Termos e privacidade', this); return false;">Termos e privacidade</a>
-    </div>
+  <div class="container" id="authContainer">
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Login de Empresas</h1>
+    <form id="loginForm">
+      <label for="emailLogin">Email</label>
+      <input type="email" id="emailLogin" required />
+      <label for="senhaLogin">Senha</label>
+      <input type="password" id="senhaLogin" required />
+      <button type="submit" class="btn-primary">Entrar</button>
+    </form>
+    <div class="switch-link" id="toCadastro">Não tem conta? Cadastre-se aqui</div>
+    <button onclick="window.location.href='login.html'" class="btn-secondary">Voltar</button>
   </div>
 
-  <div class="main">
-    <div class="background" aria-hidden="true">
-      <div class="circle circle1"></div>
-      <div class="circle circle2"></div>
-      <div class="circle circle3"></div>
-    </div>
-
-    <div class="header">
-      <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Buscar..." aria-label="Buscar" />
-      </div>
-      <div class="icons" role="toolbar" aria-label="Ações">
-        <div class="icon" title="Configurações" aria-label="Configurações">⚙️</div>
-        <div class="icon" title="Notificações" aria-label="Notificações">🔔</div>
-        <div class="icon" title="Perfil" aria-label="Perfil">👤</div>
-      </div>
-    </div>
-
-    <div class="perfil-panel" id="perfilPanel" aria-hidden="true">
-      <div class="fechar-perfil" onclick="togglePerfil(false)" title="Fechar painel">&times;</div>
-      <h3>Editar Perfil</h3>
-      <form id="perfilForm">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
-        <label for="telefone">Telefone:</label>
-        <input type="tel" id="telefone" name="telefone">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="idade">Idade:</label>
-        <input type="number" id="idade" name="idade">
-        <label for="sexo">Sexo:</label>
-        <input type="text" id="sexo" name="sexo">
-        <button type="submit">Salvar</button>
-      </form>
-    </div>
-
-    <div class="content" id="conteudo"></div>
+  <div class="container" id="cadastroContainer" style="display:none;">
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Cadastro de Empresa</h1>
+    <form id="cadastroForm">
+      <label for="emailCadastro">Email</label>
+      <input type="email" id="emailCadastro" required />
+      <label for="senhaCadastro">Senha</label>
+      <input type="password" id="senhaCadastro" required />
+      <label for="nomeEmpresa">Nome da empresa</label>
+      <input type="text" id="nomeEmpresa" required />
+      <button type="submit" class="btn-primary">Cadastrar</button>
+    </form>
+    <div class="switch-link" id="toLogin">Já tem conta? Faça login aqui</div>
+    <button onclick="window.location.href='login.html'" class="btn-secondary">Voltar</button>
   </div>
 
-<script>
-  const cursos = [
-    {
-      id: 1,
-      titulo: "Curso de Programação Web",
-      descricao: "Aprenda HTML, CSS, JavaScript e frameworks modernos.",
-      duracao: "6 meses",
-      instituicao: "Senai",
-      conteudo: `
-        <h3>Introdução à Programação Web</h3>
-        <p>Aprenderemos HTML básico, tags importantes e estrutura de páginas.</p>
-        <h3>CSS</h3>
-        <p>Estilizando páginas com CSS e conceitos de design responsivo.</p>
-        <h3>JavaScript</h3>
-        <p>Interatividade e lógica de programação.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/qz0aGYrrlhU",
-        "https://www.youtube.com/embed/0JsR1pP6QxE"
-      ]
-    },
-    {
-      id: 2,
-      titulo: "Curso de Design Gráfico",
-      descricao: "Domine ferramentas como Photoshop e Illustrator.",
-      duracao: "4 meses",
-      instituicao: "Sesc",
-      conteudo: `
-        <h3>Photoshop Básico</h3>
-        <p>Aprenda edição de imagens e criação de banners.</p>
-        <h3>Illustrator</h3>
-        <p>Criação de logotipos e ilustrações vetoriais.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/iee3N9Kj7cI",
-        "https://www.youtube.com/embed/QDnFqg_h4e0"
-      ]
-    },
-    {
-      id: 3,
-      titulo: "Curso de Administração",
-      descricao: "Desenvolva habilidades de gestão e liderança.",
-      duracao: "1 ano",
-      instituicao: "Sebrae",
-      conteudo: `
-        <h3>Gestão Empresarial</h3>
-        <p>Fundamentos de administração e planejamento estratégico.</p>
-        <h3>Liderança</h3>
-        <p>Como motivar equipes e delegar tarefas eficientemente.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "https://www.youtube.com/embed/oHg5SJYRHA0"
-      ]
+  <div class="container" id="vagaContainer" style="display:none;">
+    <img src="OpportunityHub.png" alt="OpportunityHub" class="logo">
+    <h1>Painel da Empresa</h1>
+    <button onclick="logout()" class="btn-secondary">Sair</button>
+    <h2 style="margin-top:15px;">Cadastrar Vaga</h2>
+    <form id="vagaForm">
+      <label for="titulo">Título da vaga *</label>
+      <input type="text" id="titulo" required />
+      <label for="descricao">Descrição *</label>
+      <textarea id="descricao" required></textarea>
+      <label for="local">Local *</label>
+      <input type="text" id="local" required />
+      <label for="salario">Salário</label>
+      <input type="text" id="salario" placeholder="Exemplo: R$ 3.000,00" />
+      <label for="contrato">Tipo de contrato *</label>
+      <select id="contrato" required>
+        <option value="">Selecione</option>
+        <option value="CLT">CLT</option>
+        <option value="PJ">PJ</option>
+        <option value="Estágio">Estágio</option>
+        <option value="Freelancer">Freelancer</option>
+      </select>
+      <button type="submit" class="btn-primary">Cadastrar Vaga</button>
+    </form>
+    <div id="message"></div>
+    <div id="minhasVagas"></div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const cadastroForm = document.getElementById('cadastroForm');
+    const authContainer = document.getElementById('authContainer');
+    const cadastroContainer = document.getElementById('cadastroContainer');
+    const vagaContainer = document.getElementById('vagaContainer');
+    const toCadastro = document.getElementById('toCadastro');
+    const toLogin = document.getElementById('toLogin');
+    const messageDiv = document.getElementById('message');
+    const USERS_KEY = 'usuariosEmpresas';
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
     }
-  ];
-
-  let meusCursos = JSON.parse(localStorage.getItem('meusCursos') || '[]');
-
-  function showContent(section, element) {
-    const content = document.getElementById('conteudo');
-    document.querySelectorAll('.menu a').forEach(link => link.classList.remove('active'));
-    if (element) element.classList.add('active');
-
-    switch(section) {
-      case 'Inicio':
-        content.innerHTML = `
-          <section style="text-align:center; padding:50px 20px;">
-            <h1 style="font-size:36px; color:#223341; margin-bottom:20px;">Bem-vindo ao Opportunity Hub!</h1>
-            <p style="font-size:18px; max-width:700px; margin:0 auto 30px;">
-              Conectamos você às melhores oportunidades de emprego e cursos de capacitação.
-              Explore vagas, desenvolva novas habilidades e avance na sua carreira!
-            </p>
-            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:40px;">
-              <button onclick="showContent('Vagas', document.querySelector('.menu a:nth-child(2)'))" 
-                      style="padding:15px 25px; font-size:16px; border:none; border-radius:10px; background:#223341; color:white; cursor:pointer;">
-                Ver Vagas
-              </button>
-              <button onclick="showContent('Cursos', document.querySelector('.menu a:nth-child(3)'))" 
-                      style="padding:15px 25px; font-size:16px; border:none; border-radius:10px; background:#556a7b; color:white; cursor:pointer;">
-                Explorar Cursos
-              </button>
-            </div>
-            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
-              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-                <h3 style="color:#223341;">Vagas Atualizadas</h3>
-                <p>Fique por dentro das últimas oportunidades de emprego disponíveis em sua área.</p>
-              </div>
-              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-                <h3 style="color:#223341;">Cursos de Qualificação</h3>
-                <p>Adquira novas habilidades e impulsione sua carreira com nossos cursos selecionados.</p>
-              </div>
-              <div style="background:#fff; border-radius:15px; padding:20px; width:250px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-                <h3 style="color:#223341;">Conexão Profissional</h3>
-                <p>Networking com empresas e profissionais para expandir suas oportunidades.</p>
-              </div>
-            </div>
-          </section>`;
-        break;
-      case 'Vagas':
-        content.innerHTML = '<h2>Vagas</h2><div id="vagasContainer"><p>Carregando vagas...</p></div>';
-        renderizarVagas();
-        break;
-      case 'Cursos':
-        renderizarCursos();
-        break;
-      case 'Meus_cursos':
-        renderizarMeusCursos();
-        break;
-      case 'Ajuda':
-        content.innerHTML = `<h2>Ajuda</h2><p>Como usar a plataforma.</p>`;
-        break;
-      case 'Sobre nós':
-        content.innerHTML = `<h2>Sobre nós</h2><p>Equipe e missão.</p>`;
-        break;
-      case 'Termos e privacidade':
-        content.innerHTML = `<h2>Termos</h2><p>Política de privacidade.</p>`;
-        break;
-      default:
-        content.innerHTML = `<h2>${section}</h2><p>Conteúdo não disponível.</p>`;
-    }
-  }
-
-  function renderizarVagas() {
-    const vagasContainer = document.getElementById('vagasContainer');
-    const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
-
-    if (vagasColaboradores.length === 0) {
-      vagasContainer.innerHTML = "<p>Nenhuma vaga cadastrada ainda.</p>";
-      return;
+    function saveUsers(users) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 
-    vagasContainer.innerHTML = vagasColaboradores.map(v => `
-      <div class="vaga-card">
-        <h4>${v.titulo}</h4>
-        <p><strong>Empresa:</strong> ${v.empresa}</p>
-        <p><strong>Local:</strong> ${v.local}</p>
-        <p><strong>Salário:</strong> ${v.salario}</p>
-      </div>
-    `).join('');
-  }
+    toCadastro.onclick = () => {
+      authContainer.style.display = 'none';
+      cadastroContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
+    };
+    toLogin.onclick = () => {
+      cadastroContainer.style.display = 'none';
+      authContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
+    };
 
-  function renderizarCursos() {
-    const content = document.getElementById('conteudo');
-    let html = "<h2>Cursos Disponíveis</h2><div class='cursos-lista'>";
-    cursos.forEach(curso => {
-      html += `
-        <div class="curso-card">
-          <h3>${curso.titulo}</h3>
-          <p>${curso.descricao}</p>
-          <p><strong>Duração:</strong> ${curso.duracao}</p>
-          <p><strong>Instituição:</strong> ${curso.instituicao}</p>
-          <button onclick="adicionarMeuCurso(${curso.id})">Adicionar</button>
-        </div>
-      `;
-    });
-    html += "</div>";
-    content.innerHTML = html;
-  }
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('emailLogin').value.trim().toLowerCase();
+      const senha = document.getElementById('senhaLogin').value;
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.senha === senha);
 
-  function renderizarMeusCursos() {
-    const content = document.getElementById('conteudo');
-    if (meusCursos.length === 0) {
-      content.innerHTML = "<h2>Meus cursos</h2><p>Você ainda não adicionou nenhum curso.</p>";
-      return;
-    }
-    let html = "<h2>Meus cursos</h2><div class='cursos-lista'>";
-    meusCursos.forEach(id => {
-      const curso = cursos.find(c => c.id === id);
-      if (curso) {
-        html += `
-          <div class="curso-card">
-            <h3>${curso.titulo}</h3>
-            <p>${curso.descricao}</p>
-            <p><strong>Duração:</strong> ${curso.duracao}</p>
-            <p><strong>Instituição:</strong> ${curso.instituicao}</p>
-            <button onclick="removerMeuCurso(${curso.id})">Remover</button>
-            <button onclick="continuarCurso(${curso.id})" style="margin-top:5px;">Continuar</button>
-          </div>
-        `;
+      if (user) {
+        sessionStorage.setItem('userEmpresa', JSON.stringify(user));
+        authContainer.style.display = 'none';
+        cadastroContainer.style.display = 'none';
+        vagaContainer.style.display = 'block';
+        renderMinhasVagas();
+      } else {
+        alert('Usuário ou senha inválidos');
       }
     });
-    html += "</div>";
-    content.innerHTML = html;
-  }
 
-  function adicionarMeuCurso(id) {
-    if (!meusCursos.includes(id)) {
-      meusCursos.push(id);
-      localStorage.setItem('meusCursos', JSON.stringify(meusCursos));
-      alert("Curso adicionado com sucesso!");
-    }
-  }
+    cadastroForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('emailCadastro').value.trim().toLowerCase();
+      const senha = document.getElementById('senhaCadastro').value;
+      const nomeEmpresa = document.getElementById('nomeEmpresa').value.trim();
 
-  function removerMeuCurso(id) {
-    meusCursos = meusCursos.filter(cursoId => cursoId !== id);
-    localStorage.setItem('meusCursos', JSON.stringify(meusCursos));
-    renderizarMeusCursos();
-  }
+      if (!email || !senha || !nomeEmpresa) {
+        alert('Preencha todos os campos');
+        return;
+      }
 
-  function continuarCurso(id) {
-    const curso = cursos.find(c => c.id === id);
-    if (!curso) return;
+      if (!email.includes('@') || email.endsWith('@gmail.com') || email.endsWith('@hotmail.com')) {
+        alert('Use um e-mail corporativo válido.');
+        return;
+      }
 
-    const content = document.getElementById('conteudo');
-    let videosHtml = '';
-    curso.videos.forEach(video => {
-      videosHtml += `
-        <iframe width="100%" height="315" src="${video}" title="Vídeo do curso" frameborder="0" allowfullscreen style="margin-bottom:15px;"></iframe>
-      `;
+      const users = getUsers();
+      if (users.some(u => u.email === email)) {
+        alert('Este email já está cadastrado');
+        return;
+      }
+
+      users.push({ email, senha, empresa: nomeEmpresa });
+      saveUsers(users);
+      alert('Cadastro realizado com sucesso! Agora faça login.');
+      cadastroContainer.style.display = 'none';
+      authContainer.style.display = 'block';
+      messageDiv.innerHTML = '';
     });
 
-    content.innerHTML = `
-      <h2>${curso.titulo}</h2>
-      ${curso.conteudo}
-      <h3>Vídeos</h3>
-      ${videosHtml}
-      <button onclick="renderizarMeusCursos()" style="margin-top:20px; padding:10px 15px; border:none; border-radius:8px; background:#223341; color:#fff; cursor:pointer;">
-        Voltar para Meus Cursos
-      </button>
-    `;
+    const vagaForm = document.getElementById('vagaForm');
+    vagaForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const titulo = document.getElementById('titulo').value.trim();
+  const descricao = document.getElementById('descricao').value.trim();
+  const local = document.getElementById('local').value.trim();
+  const salario = document.getElementById('salario').value.trim();
+  const contrato = document.getElementById('contrato').value;
+  const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
+
+  if (!user) {
+    alert('Você precisa estar logado para cadastrar vagas.');
+    return;
   }
 
-  function togglePerfil(show) {
-    document.getElementById('perfilPanel').style.display = show ? 'block' : 'none';
+  if (!titulo || !descricao || !local || !contrato) {
+    alert('Por favor, preencha todos os campos obrigatórios.');
+    return;
   }
 
-  document.querySelector('.icon[title="Perfil"]').addEventListener('click', () => togglePerfil(true));
+  let vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
 
-  showContent('Inicio');
-</script>
+  const novaVaga = {
+    id: Date.now(),
+    titulo,
+    descricao,
+    local,
+    salario,
+    contrato,
+    empresa: user.empresa,
+    email: user.email
+  };
+
+  vagas.push(novaVaga);
+  localStorage.setItem('vagasColaboradores', JSON.stringify(vagas));
+
+  vagaForm.reset();
+  messageDiv.innerHTML = '<div class="success-message">Vaga cadastrada com sucesso!</div>';
+  renderMinhasVagas();
+});
+
+
+function renderMinhasVagas() {
+  const user = JSON.parse(sessionStorage.getItem('userEmpresa'));
+  const vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
+  const minhas = vagas.filter(v => v.email === user.email);
+  const container = document.getElementById('minhasVagas');
+
+  if (minhas.length === 0) {
+    container.innerHTML = '<p style="margin-top: 20px;">Nenhuma vaga cadastrada ainda.</p>';
+    return;
+  }
+
+  container.innerHTML = '<h3 style="margin-top: 30px;">Suas Vagas:</h3>' +
+    minhas.map(v => `
+      <div class="vaga-box">
+        <button class="remove-btn" onclick="removerVaga(${v.id})">Remover</button>
+        <strong>${v.titulo}</strong> (${v.contrato})<br>
+        ${v.local} - ${v.salario || 'Salário não informado'}<br>
+        <small>${v.descricao}</small>
+      </div>
+    `).join('');
+}
+
+
+    function removerVaga(id) {
+      if (confirm('Deseja remover esta vaga?')) {
+        let vagas = JSON.parse(localStorage.getItem('vagasColaboradores')) || [];
+        vagas = vagas.filter(v => v.id !== id);
+        localStorage.setItem('vagasColaboradores', JSON.stringify(vagas));
+        renderMinhasVagas();
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('userEmpresa');
+      location.reload();
+    }
+
+    window.onload = () => {
+      const user = sessionStorage.getItem('userEmpresa');
+      if (user) {
+        authContainer.style.display = 'none';
+        cadastroContainer.style.display = 'none';
+        vagaContainer.style.display = 'block';
+        renderMinhasVagas();
+      }
+    };
+  </script>
 </body>
 </html>
-
