@@ -135,92 +135,163 @@ button:hover {
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const escolhaSection = document.getElementById("escolha-section");
-  const loginSection = document.getElementById("login-section");
-  const cadastroSection = document.getElementById("cadastro-section");
+(function() {
+  try {
+    console.clear();
+    console.log("Script init — iniciando verificação de elementos...");
 
-  function mostrarEscolha() {
-    escolhaSection.style.display = "block";
-    loginSection.style.display = "none";
-    cadastroSection.style.display = "none";
-  }
-
-  function mostrarLogin() {
-    escolhaSection.style.display = "none";
-    loginSection.style.display = "block";
-    cadastroSection.style.display = "none";
-    document.getElementById("loginError").style.display="none";
-  }
-
-  function mostrarCadastro() {
-    escolhaSection.style.display = "none";
-    loginSection.style.display = "none";
-    cadastroSection.style.display = "block";
-    document.getElementById("cadastroError").style.display="none";
-    document.getElementById("cadastroSuccess").style.display="none";
-  }
-
-  function cadastrarUsuario() {
-    const nome = document.getElementById("nomeCadastro").value.trim();
-    const telefone = document.getElementById("telefoneCadastro").value.trim();
-    const idade = document.getElementById("idadeCadastro").value.trim();
-    const sexo = document.getElementById("sexoCadastro").value;
-    const email = document.getElementById("emailCadastro").value.trim();
-    const senha = document.getElementById("senhaCadastro").value.trim();
-    const erro = document.getElementById("cadastroError");
-    const sucesso = document.getElementById("cadastroSuccess");
-
-    if (!nome || !telefone || !idade || !sexo || !email || !senha) {
-      erro.innerText = "Preencha todos os campos corretamente.";
-      erro.style.display = "block";
-      sucesso.style.display = "none";
-      return;
+    // Função utilitária para buscar elementos com checagem
+    function $id(id) {
+      const el = document.getElementById(id);
+      if (!el) console.warn(`Elemento não encontrado: #${id}`);
+      return el;
     }
 
-    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    if (usuarios.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      erro.innerText = "Este email já está cadastrado.";
-      erro.style.display = "block";
-      sucesso.style.display = "none";
-      return;
+    // certifica que todos os botões dentro do container sejam type="button"
+    const allButtons = document.querySelectorAll(".login-container button");
+    allButtons.forEach(btn => {
+      if (!btn.hasAttribute("type")) {
+        btn.setAttribute("type", "button");
+        console.log("Ajustado type=button para:", btn);
+      }
+    });
+
+    // checa disponibilidade do localStorage
+    let storageOK = true;
+    try {
+      const testKey = "__lh_test";
+      localStorage.setItem(testKey, "1");
+      localStorage.removeItem(testKey);
+      console.log("localStorage disponível");
+    } catch (e) {
+      storageOK = false;
+      console.error("localStorage indisponível: ", e);
     }
 
-    usuarios.push({nome, telefone, idade, sexo, email, senha});
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    const escolhaSection = $id("escolha-section");
+    const loginSection = $id("login-section");
+    const cadastroSection = $id("cadastro-section");
 
-    sucesso.innerText = "Cadastro realizado com sucesso!";
-    sucesso.style.display = "block";
-    erro.style.display = "none";
-
-    setTimeout(()=>{mostrarLogin(); sucesso.style.display="none";}, 1500);
-  }
-
-  function loginUsuario() {
-    const email = document.getElementById("emailLogin").value.trim();
-    const senha = document.getElementById("senhaLogin").value.trim();
-    const erro = document.getElementById("loginError");
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-    const usuarioValido = usuarios.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
-    if(usuarioValido){
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioValido));
-      window.location.href="index.html";
-    } else {
-      erro.innerText="Email ou senha inválidos.";
-      erro.style.display="block";
+    function mostrarEscolha() {
+      if (escolhaSection) escolhaSection.style.display = "block";
+      if (loginSection) loginSection.style.display = "none";
+      if (cadastroSection) cadastroSection.style.display = "none";
     }
-  }
 
-  // Event listeners
-  document.getElementById("btnUsuario").addEventListener("click", mostrarLogin);
-  document.getElementById("btnColaborador").addEventListener("click", ()=>window.location.href="colaboradores.html");
-  document.getElementById("linkCadastro").addEventListener("click", mostrarCadastro);
-  document.getElementById("btnVoltarLogin").addEventListener("click", mostrarEscolha);
-  document.getElementById("btnVoltarCadastro").addEventListener("click", mostrarLogin);
-  document.getElementById("btnCadastrar").addEventListener("click", cadastrarUsuario);
-  document.getElementById("btnLogin").addEventListener("click", loginUsuario);
-});
+    function mostrarLogin() {
+      if (escolhaSection) escolhaSection.style.display = "none";
+      if (loginSection) loginSection.style.display = "block";
+      if (cadastroSection) cadastroSection.style.display = "none";
+      const el = $id("loginError"); if (el) el.style.display = "none";
+    }
+
+    function mostrarCadastro() {
+      if (escolhaSection) escolhaSection.style.display = "none";
+      if (loginSection) loginSection.style.display = "none";
+      if (cadastroSection) cadastroSection.style.display = "block";
+      const e1 = $id("cadastroError"); if (e1) e1.style.display = "none";
+      const e2 = $id("cadastroSuccess"); if (e2) e2.style.display = "none";
+    }
+
+    function cadastrarUsuario() {
+      try {
+        const nome = $id("nomeCadastro")?.value.trim() || "";
+        const telefone = $id("telefoneCadastro")?.value.trim() || "";
+        const idade = $id("idadeCadastro")?.value.trim() || "";
+        const sexo = $id("sexoCadastro")?.value || "";
+        const email = $id("emailCadastro")?.value.trim() || "";
+        const senha = $id("senhaCadastro")?.value.trim() || "";
+        const erro = $id("cadastroError");
+        const sucesso = $id("cadastroSuccess");
+
+        if (!nome || !telefone || !idade || !sexo || !email || !senha) {
+          if (erro) { erro.innerText = "Preencha todos os campos corretamente."; erro.style.display = "block"; }
+          if (sucesso) sucesso.style.display = "none";
+          return;
+        }
+
+        if (!storageOK) {
+          if (erro) { erro.innerText = "Erro: localStorage indisponível."; erro.style.display = "block"; }
+          return;
+        }
+
+        let usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+        if (!Array.isArray(usuarios)) usuarios = [];
+        usuarios = usuarios.filter(u => u && u.email && u.senha);
+        if (usuarios.some(u => u?.email?.toLowerCase() === email.toLowerCase())) {
+          if (erro) { erro.innerText = "Este email já está cadastrado."; erro.style.display = "block"; }
+          if (sucesso) sucesso.style.display = "none";
+          return;
+        }
+
+        usuarios.push({nome, telefone, idade, sexo, email, senha});
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+        if (sucesso) { sucesso.innerText = "Cadastro realizado com sucesso!"; sucesso.style.display = "block"; }
+        if (erro) erro.style.display = "none";
+        setTimeout(()=>{ mostrarLogin(); if (sucesso) sucesso.style.display="none"; }, 1500);
+      } catch (err) {
+        console.error("Erro em cadastrarUsuario:", err);
+        const erro = $id("cadastroError");
+        if (erro) { erro.innerText = "Erro interno ao cadastrar (ver console)."; erro.style.display = "block"; }
+      }
+    }
+
+    function loginUsuario() {
+      try {
+        const email = $id("emailLogin")?.value.trim() || "";
+        const senha = $id("senhaLogin")?.value.trim() || "";
+        const erro = $id("loginError");
+
+        if (!storageOK) {
+          if (erro) { erro.innerText = "Erro: localStorage indisponível."; erro.style.display = "block"; }
+          return;
+        }
+
+        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        const usuarioValido = usuarios.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+
+        if (usuarioValido) {
+          localStorage.setItem("usuarioLogado", JSON.stringify(usuarioValido));
+          console.log("Login bem-sucedido. Redirecionando para index.html");
+          window.location.href = "index.html";
+        } else {
+          if (erro) { erro.innerText = "Email ou senha inválidos."; erro.style.display = "block"; }
+        }
+      } catch (err) {
+        console.error("Erro em loginUsuario:", err);
+        const erro = $id("loginError");
+        if (erro) { erro.innerText = "Erro interno ao logar (ver console)."; erro.style.display = "block"; }
+      }
+    }
+
+    // Registra listeners só se os elementos existirem
+    const listeners = [
+      {id: "btnUsuario", fn: mostrarLogin},
+      {id: "btnColaborador", fn: ()=>window.location.href="colaboradores.html"},
+      {id: "linkCadastro", fn: mostrarCadastro},
+      {id: "btnVoltarLogin", fn: mostrarEscolha},
+      {id: "btnVoltarCadastro", fn: mostrarLogin},
+      {id: "btnCadastrar", fn: cadastrarUsuario},
+      {id: "btnLogin", fn: loginUsuario}
+    ];
+
+    listeners.forEach(item => {
+      const el = $id(item.id);
+      if (el) {
+        el.addEventListener("click", item.fn);
+        console.log(`Listener registrado: #${item.id}`);
+      } else {
+        console.warn(`Não foi possível registrar listener (elemento ausente): #${item.id}`);
+      }
+    });
+
+    console.log("Inicialização concluída. Teste clicando nos botões e observando o Console.");
+
+  } catch (fatal) {
+    console.error("Erro fatal no script de login:", fatal);
+  }
+})();
 </script>
 </body>
 </html>
