@@ -151,61 +151,34 @@
   </div>
 
 <script>
+  // --- Dados iniciais de cursos ---
   const cursos = [
-    {
-      id: 1,
-      titulo: "Curso de Programação Web",
-      descricao: "Aprenda HTML, CSS, JavaScript e frameworks modernos.",
-      duracao: "6 meses",
-      instituicao: "Senai",
-      conteudo: `
-        <h3>Introdução à Programação Web</h3>
-        <p>Aprenderemos HTML básico, tags importantes e estrutura de páginas.</p>
-        <h3>CSS</h3>
-        <p>Estilizando páginas com CSS e conceitos de design responsivo.</p>
-        <h3>JavaScript</h3>
-        <p>Interatividade e lógica de programação.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/qz0aGYrrlhU",
-        "https://www.youtube.com/embed/0JsR1pP6QxE"
-      ]
+    { id:1, titulo:"Banco de dados", descricao:"Desenvolva Banco de dados SQL e noSQL.", duracao:"320 horas", instituicao:"TechGlobal",
+      conteudo: `<h3>Introdução ao curso de banco de dados</h3><p>Este curso aborda desde os conceitos fundamentais de modelagem de dados até a criação, manutenção e consulta em bancos de dados relacionais e não relacionais. Você vai aprender a desenhar diagramas entidade-relacionamento, normalização, escrever consultas em SQL, trabalhar com transações, índices e performance, e também conceitos básicos de NoSQL. Ao final, será capaz de montar o esquema de um banco de dados para aplicações reais e integrar seu design com back-end. Ótimo para quem quer atuar com armazenamento de dados, integração de sistemas e garantir a consistência e eficiência das aplicações.</p>`,
+      videos:[
+        "https://youtu.be/PrYFHm9SxqQ",
+        "2",
+        "3"
+      ] 
     },
-    {
-      id: 2,
-      titulo: "Curso de Design Gráfico",
-      descricao: "Domine ferramentas como Photoshop e Illustrator.",
-      duracao: "4 meses",
-      instituicao: "Sesc",
-      conteudo: `
-        <h3>Photoshop Básico</h3>
-        <p>Aprenda edição de imagens e criação de banners.</p>
-        <h3>Illustrator</h3>
-        <p>Criação de logotipos e ilustrações vetoriais.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/iee3N9Kj7cI",
-        "https://www.youtube.com/embed/QDnFqg_h4e0"
-      ]
+    { id:2, titulo:"Back-end", descricao:"Domine ferramentas como Photoshop e Illustrator.", duracao:"400 horas", instituicao:"CATI",
+      conteudo: `<h3>Introdução ao curso de back-end</h3><p>Focado no desenvolvimento da camada de servidor e lógica de negócios, este curso ensina a criar APIs, estruturar servidores, gerenciar rotas, autenticação, segurança e persistência com banco de dados. Você vai aprender a usar linguagens como JavaScript/Node.js, Python, ou outra de sua escolha — entendendo como a lógica de servidor se comunica com front-end e banco de dados. Também verá boas práticas, versionamento, testes e arquitetura de software. Ao completar, terá condições de construir serviços robustos e escaláveis, aptos a suportar aplicações web ou mobile.</p>`,
+      videos:[
+        "https://youtu.be/kj1owVJWqSw?si=n5rgkUTCkLa55Nzo",
+        "https://youtu.be/LbKDxQ0jX90?si=ULhdq9n36ava7OLX",
+        "https://www.youtube.com/live/LZEYwgD9Pic?si=9ee33OBUCXMfJWkR"
+      ] 
     },
-    {
-      id: 3,
-      titulo: "Curso de Administração",
-      descricao: "Desenvolva habilidades de gestão e liderança.",
-      duracao: "1 ano",
-      instituicao: "Sebrae",
-      conteudo: `
-        <h3>Gestão Empresarial</h3>
-        <p>Fundamentos de administração e planejamento estratégico.</p>
-        <h3>Liderança</h3>
-        <p>Como motivar equipes e delegar tarefas eficientemente.</p>
-      `,
-      videos: [
-        "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "https://www.youtube.com/embed/oHg5SJYRHA0"
-      ]
+    { id:3, titulo:"Front-end", descricao:"Desenvolva habilidades de gestão e liderança.", duracao:"240 horas", instituicao:"WebMaster",
+      conteudo: `<h3>Introdução ao curso de front-end</h3><p>Este curso ensina a criar interfaces funcionais e agradáveis para usuários: desde HTML e CSS básicos até JavaScript, manipulação do DOM, responsividade e frameworks modernos. Você aprenderá a construir páginas e aplicações web interativas, cuidar da experiência do usuário e da usabilidade, além de conectar o front-end com back-end para consumir dados e APIs. Ideal para quem gosta da parte visual e interativa dos sistemas. Ao fim, será capaz de desenvolver sites e aplicações web completas e responsivas.</p>`,
+      videos:[
+        "https://youtu.be/0jBSFMXHxLc?si=MKEi3go69uDm7Pkd",
+        "https://youtu.be/Tok6CGvdLV8?si=nWrPdqL8XzAVWKeR",
+        "https://www.youtube.com/live/lk5xn-l_K58?si=d9M0Yi_qfAgtuAmE"
+      ] 
     }
-  ];
+    
+    ];
 
   let meusCursos = JSON.parse(localStorage.getItem('meusCursos') || '[]');
 
@@ -250,7 +223,7 @@
           </section>`;
         break;
       case 'Vagas':
-        content.innerHTML = '<h2>Vagas</h2><div id="vagasContainer"><p>Carregando vagas...</p></div>';
+        content.innerHTML = `<h2>Vagas</h2><div id="vagasContainer"><p>Carregando vagas...</p></div>`;
         renderizarVagas();
         break;
       case 'Cursos':
@@ -260,21 +233,63 @@
         renderizarMeusCursos();
         break;
       case 'Ajuda':
-        content.innerHTML = '<h2>Ajuda</h2><p>Como usar a plataforma.</p>';
+        content.innerHTML = `
+          <h2>Precisa de ajuda?</h2>
+          <br></br>
+          <h3>Como faço para me cadastrar no site?</h3>
+          <p>Clique na opção “Cadastrar” no topo da página inicial e preencha os dados solicitados. Após concluir o cadastro, você receberá um e-mail para confirmar sua conta.</p>
+          <br></br>
+          <h3>Como posso entrar em contato com o suporte?</h3>
+          <p>Você pode nos contatar pelo e-mail opportunityhub2025@gmail.com</p>
+          <br></br>
+          <h3>Minhas informações estão seguras no site?</h3>
+          <p>Sim. Nosso site utiliza criptografia e segue práticas rigorosas de proteção de dados, em conformidade com a LGPD.</p>
+          <br></br>
+          <h3>O site está lento ou não carrega</h3>
+          <p>Tente atualizar a página, limpar o cache do navegador ou usar outro dispositivo/conexão.</p>
+          <br></br>
+          <h3>Meu curso não aparece na conta, oque fazer?</h3>
+          <p>Saia da conta e entre novamente. Se continuar, entre em contato com o suporte enviando o número do curso.</p>
+          <br></br>
+          <h3>Você está com dificuldade para se candidatar a uma vaga específica?</h3>
+          <p>Confirme se preencheu todos os dados do perfil pois algumas vagas exigem informações completas, como telefone ou curriculo currículo</p>
+          <br></br>
+          <h3>A vaga que você procura sumiu da lista ou está com erro ao abrir?</h3>
+          <p>Verifique se a vaga ainda esta aberta, pois quando o número de candidatos atinge o limite ou o prazo encerra, a vaga é automaticamente removida da lista.</p>`;
         break;
       case 'Sobre nós':
-        content.innerHTML = '<h2>Sobre nós</h2><p>Equipe e missão.</p>';
+        content.innerHTML = `
+        <h2>Sobre o OpportunityHub</h2>
+        <br></br>
+        <p> No contexto atual, o mercado de trabalho exige cada vez mais agilidade e acessibilidade para candidatos e empresas. Plataformas digitais desempenham um papel fundamental ao facilitar o acesso a oportunidades e cursos que potencializam a empregabilidade. Com efeito, o avanço da tecnologia e o crescimento da internet proporcionaram novas formas de conexão entre empresas e profissionais. Entretanto, ainda existem muitas pessoas que enfrentam dificuldades para encontrar oportunidades no mercado de trabalho, seja pela falta de acesso à informação, seja pela ausência de qualificação adequada. Pensando nisso, o projeto OpportunityHub surge como uma solução inovadora, permitindo que empresas publiquem vagas de forma prática e que candidatos encontrem oportunidades adequadas ao seu perfil, ao mesmo tempo em que recebem sugestões de cursos que fortalecem suas competências profissionais.
+  Portanto, nosso site foi projetado com o propósito de conectar candidatos desempregados a vagas de emprego e cursos profissionalizantes. A plataforma visa promover inclusão digital, facilitar a empregabilidade e oferecer capacitação para pessoas em situação de vulnerabilidade, a fim do pleno funcionamento da sociedade.
+</p>`;
         break;
       case 'Termos e privacidade':
-        content.innerHTML = '<h2>Termos</h2><p>Política de privacidade.</p>';
+        content.innerHTML = `
+          <h2>Nossos termos e privacidades</h2> 
+          <br></br>
+          <h3>Coleta de Dados</h3>
+          <p>Coletamos apenas informações necessárias, como nome, e-mail e dados do perfil, para que o site funcione corretamente.</p>
+          <br></br>
+          <h3>Uso das Informações</h3>
+          <p>Usamos seus dados para criar sua conta, recomendar cursos e vagas, enviar avisos importantes e garantir o funcionamento seguro da plataforma. Nunca venderemos seus dados.</p>
+          <br></br>
+          <h3>Segurança</h3>
+          <p>Aplicamos medidas de proteção para manter suas informações seguras, mas recomendamos o uso de senhas fortes e pessoais.</p>
+          <br></br>
+          <h3>Atualizações da política</h3>
+          <p>A política pode ser alterada conforme melhorias ou novas exigências legais, e notificaremos sempre que houver mudanças importantes.</p>`;
         break;
       default:
-        content.innerHTML = '<h2>${section}</h2><p>Conteúdo não disponível.</p>';
+        content.innerHTML = `<h2>${section}</h2><p>Conteúdo não disponível.</p>`;
     }
   }
 
-  function renderizarVagas() {
+    function renderizarVagas() {
     const vagasContainer = document.getElementById('vagasContainer');
+
+    // Recupera vagas salvas pelos colaboradores no localStorage
     const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
 
     if (vagasColaboradores.length === 0) {
@@ -291,6 +306,24 @@
       </div>
     `).join('');
   }
+
+  // --- Funções de adicionar/remover vaga pelos colaboradores ---
+  function adicionarVaga(vaga) {
+    const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
+    vagasColaboradores.push(vaga);
+    localStorage.setItem('vagasColaboradores', JSON.stringify(vagasColaboradores));
+    renderizarVagas();
+  }
+
+  function removerVaga(index) {
+    const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
+    vagasColaboradores.splice(index, 1);
+    localStorage.setItem('vagasColaboradores', JSON.stringify(vagasColaboradores));
+    renderizarVagas();
+  }
+
+  // --- Mantém a renderização inicial ---
+  showContent('Inicio');
 
   function renderizarCursos() {
     const content = document.getElementById('conteudo');
@@ -337,15 +370,15 @@
   }
 
   function adicionarMeuCurso(id) {
-    if (!meusCursos.includes(id)) {
+    if(!meusCursos.includes(id)) {
       meusCursos.push(id);
       localStorage.setItem('meusCursos', JSON.stringify(meusCursos));
-      alert("Curso adicionado com sucesso!");
+      alert("Curso adicionado aos Meus Cursos!");
     }
   }
 
   function removerMeuCurso(id) {
-    meusCursos = meusCursos.filter(cursoId => cursoId !== id);
+    meusCursos = meusCursos.filter(c => c !== id);
     localStorage.setItem('meusCursos', JSON.stringify(meusCursos));
     renderizarMeusCursos();
   }
@@ -357,9 +390,7 @@
     const content = document.getElementById('conteudo');
     let videosHtml = '';
     curso.videos.forEach(video => {
-      videosHtml += `
-        <iframe width="100%" height="315" src="${video}" title="Vídeo do curso" frameborder="0" allowfullscreen style="margin-bottom:15px;"></iframe>
-      `;
+      videosHtml += `<iframe width="100%" height="315" src="${video}" title="Vídeo do curso" frameborder="0" allowfullscreen style="margin-bottom:15px;"></iframe>`;
     });
 
     content.innerHTML = `
@@ -373,12 +404,22 @@
     `;
   }
 
+  // Perfil panel toggle
+  const perfilPanel = document.getElementById('perfilPanel');
+  document.querySelector('.icons .icon:nth-child(3)').addEventListener('click', ()=>togglePerfil());
   function togglePerfil(show) {
-    document.getElementById('perfilPanel').style.display = show ? 'block' : 'none';
+    if (show===true) perfilPanel.style.display='flex';
+    else if(show===false) perfilPanel.style.display='none';
+    else perfilPanel.style.display = perfilPanel.style.display==='flex'?'none':'flex';
   }
 
-  document.querySelector('.icon[title="Perfil"]').addEventListener('click', () => togglePerfil(true));
+  document.getElementById('perfilForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    alert('Perfil salvo!');
+    togglePerfil(false);
+  });
 
+  // Inicial
   showContent('Inicio');
 </script>
 </body>
