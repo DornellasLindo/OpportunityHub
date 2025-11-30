@@ -26,7 +26,6 @@
       margin-left: auto;
       margin-right: auto;
     }
-    .user-info { font-size: 13px; margin-bottom: 40px; line-height: 1.4; color: #111; text-align: center; }
     .menu a {
       text-decoration: none;
       color: #111;
@@ -39,11 +38,21 @@
       transition: background-color 0.3s ease;
     }
     .menu a.active, .menu a:hover { background-color: #ced3d3; font-weight: 700; }
-    .bottom-links { font-size: 13px; color: #111; display: flex; flex-direction: column; gap: 8px; user-select: none; text-align: center; }
+    
+    .bottom-links { 
+      font-size: 13px; 
+      color: #111; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 8px; 
+      user-select: none; 
+      text-align: center; 
+    }
     .bottom-links a { text-decoration: none; color: #111; cursor: pointer; }
 
     .main { flex: 1; position: relative; overflow-y: auto; background: #c4c8c7; }
 
+    /* Fundo animado */
     .background { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
     .circle { position: absolute; border-radius: 50%; filter: drop-shadow(0 0 10px rgb(0 0 0 / 0.1)); animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
     .circle1 { width: 600px; height: 600px; background: #223341; top: -300px; right: -400px; animation: float1 30s ease-in-out infinite alternate; opacity: 0.9; box-shadow: inset -70px -70px 50px #1c2933; }
@@ -54,42 +63,91 @@
     @keyframes float2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-15px, 10px) scale(1.03); } }
     @keyframes float3 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 20px) scale(1.02); } }
 
-    .header { position: sticky; top: 0; padding: 15px 30px; background: #f0f0f0; border-bottom-left-radius: 0px; display: flex; justify-content: space-between; align-items: center; z-index: 10; box-shadow: 0 2px 10px rgb(0 0 0 / 0.1); }
-    .search-box input { width: 500px; padding: 10px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 14px; transition: border-color 0.3s ease; }
-    .search-box input:focus { border-color: #556a7b; background-color: #fff; }
+    /* HEADER — agora apenas com ícone */
+    .header {
+      position: sticky;
+      top: 0;
+      padding: 15px 30px;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+    }
 
+    /* Remove search-box COMPLETA */
+    .search-box { display: none; }
+
+    /* Ícones */
     .icons { display: flex; gap: 15px; }
-    .icon { width: 26px; height: 26px; background: #c4c8c7; border-radius: 50%; cursor: pointer; box-shadow: inset 2px 2px 3px #a0a5a1, inset -2px -2px 5px #d0d5d2; transition: background 0.3s ease; display: flex; justify-content: center; align-items: center; font-size: 18px; user-select: none; }
+    .icon {
+      width: 35px;
+      height: 35px;
+      background: #c4c8c7;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: inset 2px 2px 3px #a0a5a1, inset -2px -2px 5px #d0d5d2;
+      transition: background 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      user-select: none;
+    }
     .icon:hover { background: #a0abb4; }
 
     .content { position: relative; padding: 40px 30px; z-index: 10; color: #222; max-width: 900px; }
-    .content h1 { font-weight: 700; font-size: 24px; margin-bottom: 10px; }
-    .content p { font-weight: 400; font-size: 16px; }
+    
+    .vaga-card { background: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 20px; margin-bottom: 20px; transition: transform 0.2s ease; } 
+    .vaga-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); } 
+    .vaga-card h4 { margin-bottom: 10px; color: #223341; } 
+    .vaga-card p { margin-bottom: 6px; } 
+    
+    .cursos-lista { display: flex; flex-wrap: wrap; gap: 15px; } 
+    .curso-card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: 260px; } 
+    .curso-card h3 { margin: 0 0 10px; } 
+    .curso-card button { background: #223341; color: #fff; padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; } 
+    .curso-card button:hover { background: #27485a; } @media (max-width: 768px) { 
+      .search-box input { width: 100%; } .sidebar { width: 180px; padding: 20px 10px; } 
+      .sidebar img { width: 130px; } 
+    .cursos-lista { justify-content: center; } }
 
-    .vaga-card { background: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 20px; margin-bottom: 20px; transition: transform 0.2s ease; }
-    .vaga-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
-    .vaga-card h4 { margin-bottom: 10px; color: #223341; }
-    .vaga-card p { margin-bottom: 6px; }
-
-    .cursos-lista { display: flex; flex-wrap: wrap; gap: 15px; }
-    .curso-card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); width: 260px; }
-    .curso-card h3 { margin: 0 0 10px; }
-    .curso-card button { background: #223341; color: #fff; padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; }
-    .curso-card button:hover { background: #27485a; }
-
-    @media (max-width: 768px) {
-      .search-box input { width: 100%; }
-      .sidebar { width: 180px; padding: 20px 10px; }
-      .sidebar img { width: 130px; }
-      .cursos-lista { justify-content: center; }
+    /* Painel de perfil */
+    .perfil-panel {
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
     }
-
-    .perfil-panel { position: fixed; top: 80px; right: 30px; width: 300px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); z-index: 20; display: none; flex-direction: column; padding: 20px; }
     .perfil-panel h3 { margin-bottom: 15px; font-size: 18px; color: #223341; }
     .perfil-panel label { font-weight: bold; margin-top: 10px; display: block; }
     .perfil-panel input { width: 100%; padding: 8px; margin-top: 4px; border-radius: 5px; border: 1px solid #ccc; }
     .perfil-panel button { margin-top: 15px; background: #0a66c2; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; }
     .fechar-perfil { text-align: right; font-size: 20px; cursor: pointer; margin-bottom: 10px; }
+
+    .btn-candidatar {
+    background: #223341;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: 0.2s ease;
+  }
+
+    .btn-candidatar:hover {
+    background: #304556;
+}
   </style>
 </head>
 <body>
@@ -104,6 +162,7 @@
         <a href="colaboradores.html">🏢Colaboradores</a>
       </div>
     </div>
+
     <div class="bottom-links">
       <a href="#" onclick="showContent('Ajuda', this); return false;">Ajuda</a>
       <a href="#" onclick="showContent('Sobre nós', this); return false;">Sobre nós</a>
@@ -112,23 +171,21 @@
   </div>
 
   <div class="main">
+
     <div class="background" aria-hidden="true">
       <div class="circle circle1"></div>
       <div class="circle circle2"></div>
       <div class="circle circle3"></div>
     </div>
 
+    <!-- HEADER SEM A BARRA DE BUSCA -->
     <div class="header">
-      <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Buscar..." aria-label="Buscar" />
-      </div>
       <div class="icons" role="toolbar" aria-label="Ações">
-        <div class="icon" title="Configurações" aria-label="Configurações">⚙️</div>
-        <div class="icon" title="Notificações" aria-label="Notificações">🔔</div>
-        <div class="icon" title="Perfil" aria-label="Perfil">👤</div>
+        <div class="icon" title="Perfil" aria-label="Perfil" onclick="togglePerfil(true)">👤</div>
       </div>
     </div>
 
+    <!-- Painel de Perfil -->
     <div class="perfil-panel" id="perfilPanel" aria-hidden="true">
       <div class="fechar-perfil" onclick="togglePerfil(false)" title="Fechar painel">&times;</div>
       <h3>Editar Perfil</h3>
@@ -148,6 +205,7 @@
     </div>
 
     <div class="content" id="conteudo"></div>
+
   </div>
 
 <script>
@@ -156,26 +214,26 @@
     { id:1, titulo:"Banco de dados", descricao:"Desenvolva Banco de dados SQL e noSQL.", duracao:"320 horas", instituicao:"TechGlobal",
       conteudo: `<h3>Introdução ao curso de banco de dados</h3><p>Este curso aborda desde os conceitos fundamentais de modelagem de dados até a criação, manutenção e consulta em bancos de dados relacionais e não relacionais. Você vai aprender a desenhar diagramas entidade-relacionamento, normalização, escrever consultas em SQL, trabalhar com transações, índices e performance, e também conceitos básicos de NoSQL. Ao final, será capaz de montar o esquema de um banco de dados para aplicações reais e integrar seu design com back-end. Ótimo para quem quer atuar com armazenamento de dados, integração de sistemas e garantir a consistência e eficiência das aplicações.</p>`,
       videos:[
-        "https://youtu.be/PrYFHm9SxqQ",
-        "2",
-        "3"
+        "https://youtube.com/embed/PrYFHm9SxqQ",
+        "https://youtube.com/embed/Ofktsne-utM?si=evGT8iW8P0uBkh3w",
+        "https://youtube.com/embed/fxVv3vpR2sI?si=ODe9d4xezLEDIXGw"
       ] 
     },
     { id:2, titulo:"Back-end", descricao:"Domine ferramentas como Photoshop e Illustrator.", duracao:"400 horas", instituicao:"CATI",
       conteudo: `<h3>Introdução ao curso de back-end</h3><p>Focado no desenvolvimento da camada de servidor e lógica de negócios, este curso ensina a criar APIs, estruturar servidores, gerenciar rotas, autenticação, segurança e persistência com banco de dados. Você vai aprender a usar linguagens como JavaScript/Node.js, Python, ou outra de sua escolha — entendendo como a lógica de servidor se comunica com front-end e banco de dados. Também verá boas práticas, versionamento, testes e arquitetura de software. Ao completar, terá condições de construir serviços robustos e escaláveis, aptos a suportar aplicações web ou mobile.</p>`,
       videos:[
-        "https://youtu.be/kj1owVJWqSw?si=n5rgkUTCkLa55Nzo",
-        "https://youtu.be/LbKDxQ0jX90?si=ULhdq9n36ava7OLX",
+        "https://youtube.com/embed/kj1owVJWqSw?si=n5rgkUTCkLa55Nzo",
+        "https://youtube.com/embed/LbKDxQ0jX90?si=ULhdq9n36ava7OLX",
         "https://www.youtube.com/live/LZEYwgD9Pic?si=9ee33OBUCXMfJWkR"
       ] 
     },
     { id:3, titulo:"Front-end", descricao:"Desenvolva habilidades de gestão e liderança.", duracao:"240 horas", instituicao:"WebMaster",
       conteudo: `<h3>Introdução ao curso de front-end</h3><p>Este curso ensina a criar interfaces funcionais e agradáveis para usuários: desde HTML e CSS básicos até JavaScript, manipulação do DOM, responsividade e frameworks modernos. Você aprenderá a construir páginas e aplicações web interativas, cuidar da experiência do usuário e da usabilidade, além de conectar o front-end com back-end para consumir dados e APIs. Ideal para quem gosta da parte visual e interativa dos sistemas. Ao fim, será capaz de desenvolver sites e aplicações web completas e responsivas.</p>`,
       videos:[
-        "https://youtu.be/0jBSFMXHxLc?si=MKEi3go69uDm7Pkd",
-        "https://youtu.be/Tok6CGvdLV8?si=nWrPdqL8XzAVWKeR",
+        "https://youtube.com/embed/0jBSFMXHxLc?si=MKEi3go69uDm7Pkd",
+        "https://youtube.com/embed/Tok6CGvdLV8?si=nWrPdqL8XzAVWKeR",
         "https://www.youtube.com/live/lk5xn-l_K58?si=d9M0Yi_qfAgtuAmE"
-      ] 
+      ]  
     }
     
     ];
@@ -288,25 +346,31 @@
 
     function renderizarVagas() {
     const vagasContainer = document.getElementById('vagasContainer');
+    if (!vagasContainer) return;
 
-    // Recupera vagas salvas pelos colaboradores no localStorage
-    const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
+    // pega as vagas salvas pelos colaboradores
+    const vagas = JSON.parse(localStorage.getItem('vagas') || '[]');
 
-    if (vagasColaboradores.length === 0) {
-      vagasContainer.innerHTML = "<p>Nenhuma vaga cadastrada ainda.</p>";
-      return;
+    if (vagas.length === 0) {
+        vagasContainer.innerHTML = "<p>Nenhuma vaga cadastrada ainda.</p>";
+        return;
     }
 
-    vagasContainer.innerHTML = vagasColaboradores.map(v => `
-      <div class="vaga-card">
-        <h4>${v.titulo}</h4>
-        <p><strong>Empresa:</strong> ${v.empresa}</p>
-        <p><strong>Local:</strong> ${v.local}</p>
-        <p><strong>Salário:</strong> ${v.salario}</p>
-      </div>
-    `).join('');
-  }
+    vagasContainer.innerHTML = vagas.map(v => `
+        <div class="vaga-card">
+            <h3>${v.titulo}</h3>
+            <p><strong>Empresa:</strong> ${v.empresa}</p>
+            <p><strong>Local:</strong> ${v.local}</p>
+            <p><strong>Descrição:</strong> ${v.descricao}</p>
+            <p><strong>Contrato:</strong> ${v.contrato}</p>
+            <p><strong>Salário:</strong> ${v.salario || "Não informado"}</p>
 
+            <button class="btn-candidatar" onclick="candidatarVaga(${v.id})">
+                Candidatar
+            </button>
+        </div>
+    `).join('');
+}
   // --- Funções de adicionar/remover vaga pelos colaboradores ---
   function adicionarVaga(vaga) {
     const vagasColaboradores = JSON.parse(localStorage.getItem('vagasColaboradores') || '[]');
@@ -405,12 +469,18 @@
   }
 
   // Perfil panel toggle
-  const perfilPanel = document.getElementById('perfilPanel');
-  document.querySelector('.icons .icon:nth-child(3)').addEventListener('click', ()=>togglePerfil());
+   const perfilPanel = document.getElementById('perfilPanel');
+
+  // seleciona o ícone de perfil de forma segura (se existir)
+  const perfilBtn = document.querySelector('.icons .icon[title="Perfil"]') || document.querySelector('.icons .icon');
+  if (perfilBtn) {
+    perfilBtn.addEventListener('click', () => togglePerfil(true));
+  }
+
+  // toggle existente (mantive sua assinatura)
   function togglePerfil(show) {
-    if (show===true) perfilPanel.style.display='flex';
-    else if(show===false) perfilPanel.style.display='none';
-    else perfilPanel.style.display = perfilPanel.style.display==='flex'?'none':'flex';
+    const painel = document.getElementById("perfilPanel");
+    painel.style.display = show ? "flex" : (painel.style.display === 'flex' ? 'none' : 'flex');
   }
 
   document.getElementById('perfilForm').addEventListener('submit', e=>{
@@ -419,8 +489,13 @@
     togglePerfil(false);
   });
 
-  // Inicial
+  // Inicial 
   showContent('Inicio');
+
+  function candidatarVaga(id) {
+    // você pode trocar alert por uma UI própria depois, por enquanto:
+    alert("Você se candidatou à vaga com sucesso!");
+  }
 </script>
 </body>
 </html>
